@@ -57,6 +57,12 @@ section{
   transform: translateY(-3px);
 }
 
+
+div#app div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
 footer {
     background: rgba(234, 234, 234, 0.7);
     color: #000000;
