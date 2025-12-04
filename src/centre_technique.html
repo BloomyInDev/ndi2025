@@ -2,104 +2,98 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Maison des Outils Libres - NDI</title>
+    <title>Le Centre Technique - NDI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Feuille de style commune à toutes les maisons -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Barre de navigation commune -->
     <header>
         <div class="site-branding">
             <a href="index.html"><strong>NDI</strong></a>
             <span class="site-slogan">Un numérique responsable pour tous</span>
         </div>
-
         <nav aria-label="Navigation principale">
             <ul>
-                <li><a href="index.html">Vue Global</a></li>
+                <li><a href="index.html">Vue globale</a></li>
                 <li><a href="maison.html">Maison 1 – Outils libres</a></li>
                 <li><a href="ecole.html">Maison 2 – École responsable</a></li>
                 <li><a href="centre_technique.html">Maison 3 – Centre technique</a></li>
                 <li><a href="bibliothèque.html">Maison 4 – Bibliothèque ouverte</a></li>
-                <li><a href="communiaction.html">Maison 5 – Communication</a></li>
+                <li><a href="communication.html">Maison 5 – Communication</a></li>
                 <li><a href="mairie.html">Maison 6 – Mairie numérique</a></li>
             </ul>
         </nav>
     </header>
-
-    <!-- Contenu principal -->
     <main>
-        <!-- Fil d’Ariane optionnel -->
         <nav aria-label="Fil d’Ariane" class="breadcrumb">
             <ol>
                 <li><a href="index.html">Accueil</a></li>
-                <li>Maison des Outils Libres</li>
+                <li>Le Centre Technique</li>
             </ol>
         </nav>
-
-        <!-- En-tête de la maison -->
         <section class="house-header">
-            <h1>Maison XXX</h1>
+            <h1>Le Centre Technique</h1>
             <p class="house-intro">
-                Introduction sur la maison
+                Le Centre Technique est l’atelier et l’infrastructure technique du village. Ici, on s’occupe du matériel informatique et des réseaux : on installe, répare, héberge et s’assure que le numérique de l’école fonctionne de manière <strong>fiable, sécurisée et durable</strong>.
             </p>
         </section>
-
-        <!-- Objectifs / mission de la maison -->
         <section class="house-section" id="objectifs">
             <h2>Objectifs</h2>
             <p>
-                Décrire les objectifs principaux de cette maison : à qui elle s’adresse,
-                quels problèmes elle aide à résoudre, etc.
+                Cette maison a pour mission de bâtir un environnement technique souverain et pérenne pour l’établissement. Ses objectifs :
             </p>
             <ul>
-                <li>Objectif 1</li>
-                <li>Objectif 2</li>
-                <li>Objectif 3</li>
+                <li><strong>Allonger la durée de vie</strong> des équipements numériques : récupération d’ordinateurs usagés, reconditionnement avec des systèmes légers (par ex. Linux), maintenance régulière pour éviter la panne et l’obsolescence programmée.</li>
+                <li>Déployer une <strong>infrastructure ouverte et locale</strong> : serveurs hébergés sur site ou chez des hébergeurs de confiance, utilisation de protocoles et formats ouverts, afin que l’école garde la main sur ses données et ne dépende pas des clouds privés des Big Tech.</li>
+                <li>Assurer la <strong>sécurité et la confidentialité</strong> du réseau et des données : mise à jour des logiciels, protections contre les cyberattaques, et respect des bonnes pratiques (chiffrement, sauvegardes internes) pour un numérique de confiance.</li>
+                <li><strong>Accompagner les utilisateurs</strong> sur le plan technique : fournir un support aux enseignants et élèves dans la prise en main des nouveaux outils, documenter les procédures (en lien avec <a href="bibliothèque.html">la Bibliothèque Ouverte</a>) et promouvoir les éco-gestes numériques (extinction des appareils, gestion de l’énergie).</li>
             </ul>
+            <p>
+                Le Centre Technique collabore étroitement avec <a href="maison.html">la Maison des Outils Libres</a> pour l’installation et la configuration des logiciels sélectionnés. Il répond aux besoins formulés par <a href="ecole.html">l’École Responsable</a> et adapte l’infrastructure en fonction des usages pédagogiques. Il travaille main dans la main avec <a href="mairie.html">la Mairie Numérique</a>, qui apporte souvent un soutien (budget, personnel technique communal) pour l’équipement et la maintenance. Enfin, il communique avec <a href="communication.html">la Maison de la Communication</a> afin d’informer la communauté scolaire des évolutions techniques (par exemple, les périodes de maintenance ou les nouveaux services disponibles).
+            </p>
         </section>
-
-        <!-- Ressources / contenus -->
         <section class="house-section" id="ressources">
             <h2>Ressources</h2>
-            <p>Liste des ressources proposées par cette maison.</p>
-
+            <p>Exemples de ressources pour un environnement technique libre et durable :</p>
             <article class="resource-card">
-                <h3>Nom de la ressource</h3>
-                <p>Petite description de la ressource.</p>
-                <a href="#" class="resource-link">Voir la ressource</a>
+                <h3>PrimTux</h3>
+                <p>Une distribution Linux éducative française, spécialement conçue pour les écoles primaires. Légère et complète, PrimTux permet de faire revivre de vieux PC et d’offrir aux plus jeunes un environnement adapté et sans logiciels privateurs.</p>
+                <a href="https://primtux.fr" class="resource-link" target="_blank" rel="noopener">Site de PrimTux</a>
             </article>
-
-            <!-- Dupliquer le bloc <article> pour ajouter d'autres ressources -->
+            <article class="resource-card">
+                <h3>Emmabuntüs</h3>
+                <p>Une distribution GNU/Linux dérivée de Debian, pensée pour le réemploi d’ordinateurs d’occasion (notamment via les communautés Emmaüs). Emmabuntüs est préconfigurée avec de nombreux logiciels libres et vise à faciliter le reconditionnement pour réduire la fracture numérique.</p>
+                <a href="https://emmabuntus.org" class="resource-link" target="_blank" rel="noopener">Découvrir Emmabuntüs</a>
+            </article>
+            <article class="resource-card">
+                <h3>LaCollecte.tech</h3>
+                <p>Plateforme solidaire permettant aux entreprises et administrations de faire don de leur matériel informatique inutilisé. Ces équipements sont ensuite reconditionnés et redistribués à des associations ou établissements scolaires afin de promouvoir l’inclusion numérique.</p>
+                <a href="https://lacollecte.tech" class="resource-link" target="_blank" rel="noopener">En savoir plus sur LaCollecte.tech</a>
+            </article>
         </section>
-
-        <!-- Projets / exemples -->
         <section class="house-section" id="projets">
             <h2>Projets et exemples concrets</h2>
-            <p>Mettre ici des cas d’usage, projets d’élèves, ateliers, démonstrations…</p>
-
+            <p>Illustrations du rôle du Centre Technique dans la résistance numérique :</p>
             <article class="project-card">
-                <h3>Nom du projet</h3>
-                <p>Description courte du projet et de ce qu’il montre / apporte.</p>
+                <h3>Club de reconditionnement informatique</h3>
+                <p>Dans un lycée, le service informatique a créé un club impliquant des élèves passionnés. Ensemble, ils récupèrent des ordinateurs usagés auprès de la communauté, les réparent et y installent <strong>Linux</strong> (ex : PrimTux ou Emmabuntüs). Ces machines reconditionnées sont ensuite mises à disposition d’élèves n’en ayant pas chez eux ou équipent des écoles primaires partenaires. Le projet, soutenu par <a href="mairie.html">la Mairie Numérique</a> (qui facilite la collecte de matériel) et encouragé par <a href="ecole.html">l’École Responsable</a>, combine écologie, solidarité et montée en compétences des élèves.</p>
+            </article>
+            <article class="project-card">
+                <h3>Services hébergés localement</h3>
+                <p>Un collège a choisi d’<strong>auto-héberger</strong> certains services pour ne plus dépendre de fournisseurs externes. Un petit serveur a été mis en place par le Centre Technique pour héberger par exemple une instance <em>Nextcloud</em> (nuage privé pour partager des documents et des devoirs) et un outil de visioconférence open source pour les réunions à distance. Désormais, les données restent au sein de l’établissement. Ce projet a nécessité une formation du personnel (avec l’aide de <a href="bibliothèque.html">la Bibliothèque Ouverte</a> qui a fourni des tutoriels) et un appui de <a href="mairie.html">la Mairie Numérique</a> pour l’acquisition du serveur. Il démontre qu’une école peut gérer ses outils essentiels en toute autonomie.</p>
             </article>
         </section>
-
-        <!-- Appel à action / contact -->
         <section class="house-section" id="participer">
             <h2>Participer</h2>
             <p>
-                Comment contribuer, qui contacter, comment proposer une ressource ou un projet.
+                Vous êtes technicien·ne, enseignant·e féru·e d’informatique ou étudiant·e motivé·e ? Contribuez au Centre Technique ! Par exemple : en proposant vos compétences pour installer ou réparer du matériel, en donnant du matériel encore utilisable, ou en rédigeant des guides techniques simplifiés pour les utilisateurs.
             </p>
             <ul>
-                <li>Contact : <a href="mailto:contact@ndi.example">contact@ndi.example</a></li>
-                <li>Formulaire de contribution (lien à venir)</li>
+                <li>Contact : <a href="mailto:contact@ndi.example">contact@ndi.example</a></li>
+                <li>Partagez vos tutoriels ou offres de matériel via notre <a href="#">plateforme d’échange</a> (à venir)</li>
             </ul>
         </section>
     </main>
-
-    <!-- Pied de page commun -->
     <footer>
         <p>&copy; 2025 NDI – Tous droits réservés.</p>
         <p>
@@ -110,4 +104,3 @@
     </footer>
 </body>
 </html>
-
