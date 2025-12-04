@@ -93,4 +93,47 @@ footer a:active {
         display: inline-block;
         margin: 4px 6px;
     }
+  }
+
+.bg_biblio {
+  background-image: url("/bg_biblio.jpg"); 
+  background-size: 100% auto;  
+  background-repeat: repeat-y;  
+  background-position: top center;
+  
+}
+
+.bg_centre_tech {
+  background-image: url("../public/bg_centretech.jpg");
+  background-size: 100% auto;  
+  background-repeat: repeat-y;  
+  background-position: top center;
+}
+
+.bg_poste {
+  background-image: url("../public/bg_post.jpg");
+  background-size: 100% auto;  
+  background-repeat: repeat-y;  
+  background-position: top center;
+}
+
+.bg_ecole {
+  background-image: url("../public/bg_ecole.jpg");
+  background-size: 100% auto;  
+  background-repeat: repeat-y;  
+  background-position: top center;
+}
+
+.bg_mairie {
+  background-image: url("../public/bg_mairie.jpg");
+  background-size: 100% auto;  
+  background-repeat: repeat-y;  
+  background-position: top center;
+}
+
+.bg_maison {
+  background-image: url("../public/bg_maison.jpg");
+  background-size: 100% auto;  
+  background-repeat: repeat-y;  
+  background-position: top center;
 }
