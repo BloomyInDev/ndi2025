@@ -46,6 +46,8 @@ body {
 
 body {
   background-color: #ffffff;
+    background-image: url('../public/background.png');
+  background-size: cover;
 }
 
 div#app div {
