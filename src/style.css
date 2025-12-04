@@ -36,14 +36,14 @@ body {
 
 .houses-nav a span {
   font-size: 0.85em;
-  color: #666;
+  color: #000000;
 }
 
 .houses-nav a:hover {
-  background: #eaeaea;
+  background: #b4b3b3;
   transform: translateY(-3px);
 }
 
 body {
-  background-color: #faeeee;
+  background-color: #ffffff;
 }
