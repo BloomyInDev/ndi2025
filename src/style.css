@@ -5,8 +5,9 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background: #fafafa;
-  border-bottom: 2px solid #ddd;
+  background: rgba(234, 234, 234, 0.7);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px); 
 }
 
 .houses-nav li {
@@ -18,7 +19,7 @@
   padding: 15px 10px;
   text-align: center;
   text-decoration: none;
-  color: #333;
+  color: #353232;
   font-weight: 600;
   width: 140px;
   transition: 0.2s;
@@ -33,4 +34,8 @@
 .houses-nav a:hover {
   background: #eaeaea;
   transform: translateY(-3px);
+}
+
+body {
+  background-color: #494949;
 }
