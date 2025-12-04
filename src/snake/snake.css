@@ -1,0 +1,22 @@
+div#app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #000;
+    margin: 0;
+}
+
+div#app > * {
+    color: white
+}
+
+div#app > canvas {
+    border: 2px solid #fff;
+    width: 25;
+}
+
+body {
+    margin: 0;
+}
