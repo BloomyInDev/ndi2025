@@ -42,11 +42,3 @@ body {
   background: #eaeaea;
   transform: translateY(-3px);
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
-
-body {
-    font-family: "Jersey 10", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-}
