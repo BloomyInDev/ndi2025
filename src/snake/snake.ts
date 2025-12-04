@@ -1,6 +1,7 @@
-const FPS = 5;
 const DEBUG = false;
 const DEFAULT_SNAKE_LENGTH = 5;
+const DEFAULT_FPS = 5;
+const MILLISECONDS_BETWEEN_SPEED_INCREASE = 1000 * .5;
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
@@ -31,16 +32,19 @@ let snake: {
   queue: { x: number; y: number }[];
 };
 
+let fps = DEFAULT_FPS;
 const snakeSize = 25;
-const cellsCount = 13;
+const cellsCount = 11;
 const speed = snakeSize;
+let gameInterval: number | null = null;
+let speedInterval: number | null = null;
 
 let apple: { x: number; y: number };
 let score = 0;
 
 const setBestScore = (newScore: number) => {
   localStorage.setItem("snakeScore", newScore.toString());
-}
+};
 
 const getBestScore = (): number => {
   const score = localStorage.getItem("snakeScore");
@@ -48,7 +52,7 @@ const getBestScore = (): number => {
     return parseInt(score, 10);
   }
   return 0;
-}
+};
 
 const hasQueueTouchedItself = () => {
   const head = snake.queue[snake.queue.length - 1];
@@ -79,17 +83,21 @@ const createNewApple = () => {
     x: Math.floor(Math.random() * cellsCount) * snakeSize,
     y: Math.floor(Math.random() * cellsCount) * snakeSize,
   };
-  if (snake.queue.some(segment => segment.x === apple.x && segment.y === apple.y)) {
+  if (
+    snake.queue.some(
+      (segment) => segment.x === apple.x && segment.y === apple.y
+    )
+  ) {
     createNewApple();
   }
-}
+};
 
 const displayScore = () => {
   const scoreElement = document.getElementById("score");
   if (scoreElement) {
-    scoreElement.textContent = `Score: ${score}`;
+    scoreElement.textContent = `Score: ${score} | Meilleur score: ${getBestScore()} | Vitesse: ${fps} FPS`;
   }
-}
+};
 
 /**
  * Dessine le fond en damier
@@ -136,14 +144,39 @@ const setup = () => {
     queue: [],
   };
   score = 0;
+  fps = DEFAULT_FPS;
   createNewApple();
+  launchIntervals();
+};
+
+const launchIntervals = () => {
+  if (gameInterval) {
+    clearInterval(gameInterval);
+  }
+  if (speedInterval) {
+    clearInterval(speedInterval);
+  }
+  gameInterval = setInterval(game, 1000 / fps);
+  speedInterval = setInterval(() => {
+    fps += 1;
+    updateGameInterval();
+  }, MILLISECONDS_BETWEEN_SPEED_INCREASE);
+};
+
+const updateGameInterval = () => {
+  if (gameInterval) {
+    clearInterval(gameInterval);
+  }
+  gameInterval = setInterval(game, 1000 / fps);
 };
 
 const game = () => {
   if (DEBUG) console.table(Object.entries(snake));
 
   if (hasQueueTouchedItself()) {
-    alert(`Tu t'est mordu la queue !\nTon score : ${score}\nMeilleur score : ${getBestScore()}`);
+    alert(
+      `Tu t'est mordu la queue !\nTon score : ${score}\nMeilleur score : ${getBestScore()}`
+    );
     if (score > getBestScore()) {
       setBestScore(score);
     }
@@ -151,7 +184,9 @@ const game = () => {
   }
 
   if (hasBorderBeenTouched()) {
-    alert(`Tu as touché la bordure !\nTon score : ${score}\nMeilleur score : ${getBestScore()}`);
+    alert(
+      `Tu as touché la bordure !\nTon score : ${score}\nMeilleur score : ${getBestScore()}`
+    );
     if (score > getBestScore()) {
       setBestScore(score);
     }
@@ -171,7 +206,16 @@ const game = () => {
   drawBackground();
 
   ctx.fillStyle = "red";
-  ctx.fillRect(apple.x, apple.y, snakeSize, snakeSize);
+  ctx.beginPath();
+  ctx.arc(
+    apple.x + snakeSize / 2,
+    apple.y + snakeSize / 2,
+    snakeSize / 2.5,
+    0,
+    2 * Math.PI
+  );
+  ctx.fill();
+  //ctx.fillRect(apple.x, apple.y, snakeSize, snakeSize);
 
   ctx.fillStyle = "lime";
   ctx.fillRect(snake.pos.x, snake.pos.y, snakeSize, snakeSize);
@@ -185,24 +229,29 @@ const game = () => {
   snake.queue.forEach((segment) => {
     ctx.fillRect(segment.x, segment.y, snakeSize, snakeSize);
   });
-  displayScore()
+  displayScore();
 };
 
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "ArrowUp":
-      document.getElementById("up")?.click()
+    case "z":
+      document.getElementById("up")?.click();
       break;
     case "ArrowDown":
-      document.getElementById("down")?.click()
+    case "s":
+      document.getElementById("down")?.click();
       break;
     case "ArrowLeft":
-      document.getElementById("left")?.click()
-      break;
+    case "q":
+      document.getElementById("left")?.click();
       break;
     case "ArrowRight":
-      document.getElementById("right")?.click()
+    case "d":
+      document.getElementById("right")?.click();
       break;
+    default:
+      console.log("Touche non gérée :", event.key);
       break;
   }
 });
@@ -228,4 +277,3 @@ resize();
 window.addEventListener("resize", resize);
 
 setup();
-const interval = setInterval(game, 1000 / FPS);
