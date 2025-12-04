@@ -109,7 +109,7 @@ footer a:active {
   }
 
 .bg_biblio {
-  background-image: url("/bg_biblio.jpg"); 
+  background-image: url("../public/bg_biblio.jpg"); 
   background-size: 100% auto;  
   background-repeat: repeat-y;  
   background-position: top center;
