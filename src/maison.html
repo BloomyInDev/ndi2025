@@ -2,104 +2,97 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Maison des Outils Libres - NDI</title>
+    <title>La Maison des Outils Libres - NDI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Feuille de style commune à toutes les maisons -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Barre de navigation commune -->
     <header>
         <div class="site-branding">
             <a href="index.html"><strong>NDI</strong></a>
             <span class="site-slogan">Un numérique responsable pour tous</span>
         </div>
-
-        <nav aria-label="Navigation principale">
-            <ul>
-                <li><a href="index.html">Vue Global</a></li>
-                <li><a href="maison.html">Maison 1 – Outils libres</a></li>
-                <li><a href="ecole.html">Maison 2 – École responsable</a></li>
-                <li><a href="centre_technique.html">Maison 3 – Centre technique</a></li>
-                <li><a href="bibliothèque.html">Maison 4 – Bibliothèque ouverte</a></li>
-                <li><a href="communiaction.html">Maison 5 – Communication</a></li>
-                <li><a href="mairie.html">Maison 6 – Mairie numérique</a></li>
-            </ul>
-        </nav>
+        <nav class="houses-nav">
+      <ul>
+        <li><a href="maison.html">🏠 Maison 1<br><span>Outils Libres</span></a></li>
+        <li><a href="ecole.html">🏫 Maison 2<br><span>École Responsable</span></a></li>
+        <li><a href="centre_technique.html">🖥️ Maison 3<br><span>Centre Technique</span></a></li>
+        <li><a href="bibliothèque.html">📚 Maison 4<br><span>Bibliothèque Ouverte</span></a></li>
+        <li><a href="communication.html">📨 Maison 5<br><span>Communication</span></a></li>
+        <li><a href="mairie.html">🧱 Maison 6<br><span>Mairie Numérique</span></a></li>
+      </ul>
+    </nav>
     </header>
-
-    <!-- Contenu principal -->
     <main>
-        <!-- Fil d’Ariane optionnel -->
         <nav aria-label="Fil d’Ariane" class="breadcrumb">
             <ol>
                 <li><a href="index.html">Accueil</a></li>
                 <li>Maison des Outils Libres</li>
             </ol>
         </nav>
-
-        <!-- En-tête de la maison -->
         <section class="house-header">
-            <h1>Maison XXX</h1>
+            <h1>La Maison des Outils Libres</h1>
             <p class="house-intro">
-                Introduction sur la maison
+                Cette maison représente l’atelier numérique du village résistant. On y trouve tous les <strong>logiciels libres et outils open source</strong> qui permettent à un établissement scolaire de fonctionner en toute autonomie, sans dépendre des géants du numérique.
             </p>
         </section>
-
-        <!-- Objectifs / mission de la maison -->
         <section class="house-section" id="objectifs">
             <h2>Objectifs</h2>
             <p>
-                Décrire les objectifs principaux de cette maison : à qui elle s’adresse,
-                quels problèmes elle aide à résoudre, etc.
+                La Maison des Outils Libres a pour vocation de fournir à l’école des solutions alternatives respectueuses des utilisateurs et de leurs données. Ses objectifs principaux :
             </p>
             <ul>
-                <li>Objectif 1</li>
-                <li>Objectif 2</li>
-                <li>Objectif 3</li>
+                <li>Mettre à disposition des élèves et enseignants des <strong>logiciels libres</strong> pour les besoins quotidiens (bureautique, création, communication…).</li>
+                <li><strong>Réduire la dépendance</strong> aux Big Tech en remplaçant les services propriétaires par des alternatives ouvertes, pérennes et économiques.</li>
+                <li>Donner aux utilisateurs la <strong>maîtrise de leurs outils</strong> : comprendre leur fonctionnement, pouvoir les adapter et développer l’esprit critique numérique.</li>
+                <li>Garantir le <strong>respect de la vie privée</strong> en privilégiant des outils qui n’exploitent pas les données personnelles.</li>
             </ul>
+            <p>
+                En coordination avec <a href="ecole.html">l’École Responsable</a> et <a href="bibliothèque.html">la Bibliothèque Ouverte</a>, cette maison contribue à former une communauté éducative acculturée au numérique libre. Elle travaille de pair avec <a href="centre_technique.html">le Centre Technique</a> pour installer et maintenir ces solutions sur le terrain, avec le soutien de <a href="mairie.html">la Mairie Numérique</a> pour inscrire ces choix dans la stratégie de l’établissement.
+            </p>
         </section>
-
-        <!-- Ressources / contenus -->
         <section class="house-section" id="ressources">
             <h2>Ressources</h2>
-            <p>Liste des ressources proposées par cette maison.</p>
-
+            <p>Quelques outils libres et références à découvrir :</p>
             <article class="resource-card">
-                <h3>Nom de la ressource</h3>
-                <p>Petite description de la ressource.</p>
-                <a href="#" class="resource-link">Voir la ressource</a>
+                <h3>LibreOffice</h3>
+                <p>Suite bureautique libre (traitement de texte, tableur, présentation) compatible avec les formats standards, alternative à Microsoft Office.</p>
+                <a href="https://fr.libreoffice.org/" class="resource-link" target="_blank" rel="noopener">Site officiel LibreOffice</a>
             </article>
-
-            <!-- Dupliquer le bloc <article> pour ajouter d'autres ressources -->
+            <article class="resource-card">
+                <h3>Nextcloud</h3>
+                <p>Plateforme cloud auto-hébergeable pour le stockage de fichiers, le partage et la collaboration (agenda, notes, visioconférence), en remplacement de Google Drive ou OneDrive.</p>
+                <a href="https://nextcloud.com/" class="resource-link" target="_blank" rel="noopener">Découvrir Nextcloud</a>
+            </article>
+            <article class="resource-card">
+                <h3>Moodle</h3>
+                <p>Environnement numérique d’apprentissage libre et modulable, utilisé pour créer des cours en ligne, gérer des activités pédagogiques et remplacer des plateformes propriétaires.</p>
+                <a href="https://moodle.org/?lang=fr" class="resource-link" target="_blank" rel="noopener">En savoir plus sur Moodle</a>
+            </article>
         </section>
-
-        <!-- Projets / exemples -->
         <section class="house-section" id="projets">
             <h2>Projets et exemples concrets</h2>
-            <p>Mettre ici des cas d’usage, projets d’élèves, ateliers, démonstrations…</p>
-
+            <p>Illustrations de la mise en place des outils libres dans des contextes scolaires :</p>
             <article class="project-card">
-                <h3>Nom du projet</h3>
-                <p>Description courte du projet et de ce qu’il montre / apporte.</p>
+                <h3>Migration vers les logiciels libres au lycée</h3>
+                <p>Un lycée a entrepris de remplacer sa suite Office et ses services cloud par des solutions libres. Résultat : des économies sur les licences, une meilleure protection des données élèves et une plus grande autonomie pour les enseignants. Ce projet, soutenu par <a href="mairie.html">la Mairie Numérique</a>, sert d’exemple reproductible pour d’autres établissements.</p>
+            </article>
+            <article class="project-card">
+                <h3>Ateliers de découverte du Libre</h3>
+                <p>Régulièrement, des ateliers sont organisés pour former les enseignants et élèves à l’utilisation des outils libres (création graphique avec GIMP, montage vidéo avec KDEnlive, etc.). Ces sessions, en collaboration avec <a href="bibliothèque.html">la Bibliothèque Ouverte</a>, renforcent les compétences numériques de chacun et encouragent le partage de bonnes pratiques.</p>
             </article>
         </section>
-
-        <!-- Appel à action / contact -->
         <section class="house-section" id="participer">
             <h2>Participer</h2>
             <p>
-                Comment contribuer, qui contacter, comment proposer une ressource ou un projet.
+                Vous souhaitez contribuer à la Maison des Outils Libres ? Vous pouvez par exemple suggérer de nouveaux logiciels à inclure dans la boîte à outils, partager votre expérience d’une migration vers des solutions libres ou animer un atelier de formation.
             </p>
             <ul>
-                <li>Contact : <a href="mailto:contact@ndi.example">contact@ndi.example</a></li>
-                <li>Formulaire de contribution (lien à venir)</li>
+                <li>Contact : <a href="mailto:contact@ndi.example">contact@ndi.example</a></li>
+                <li>Proposer une ressource ou un projet via le <a href="#">formulaire de contribution</a> (à venir)</li>
             </ul>
         </section>
     </main>
-
-    <!-- Pied de page commun -->
     <footer>
         <p>&copy; 2025 NDI – Tous droits réservés.</p>
         <p>
@@ -110,4 +103,3 @@
     </footer>
 </body>
 </html>
-
