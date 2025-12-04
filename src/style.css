@@ -50,8 +50,45 @@ body {
   background-size: cover;
 }
 
-div#app div {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+footer {
+    background: #0d0d0d;
+    color: #f2f2f2;
+    padding: 25px 15px;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    margin-top: 40px;
+    border-top: 2px solid #2a2a2a;
+}
+
+footer p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+footer a {
+    color: #d1d1d1;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: 0.2s ease;
+}
+
+footer a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+footer a:active {
+    opacity: 0.7;
+}
+
+
+@media (max-width: 480px) {
+    footer p {
+        font-size: 0.9rem;
+    }
+    footer a {
+        display: inline-block;
+        margin: 4px 6px;
+    }
 }
