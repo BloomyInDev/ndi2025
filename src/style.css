@@ -62,6 +62,7 @@ div#app div {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
 
 footer {
     background: rgba(234, 234, 234, 0.7);
