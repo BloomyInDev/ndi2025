@@ -8,34 +8,35 @@
 :root{
   --bg: #0f1724;
   --card: #0b1220;
-  --accent: #7dd3fc;
+  --accent: #e7e7e7;
   --pip: #051023;
 }
 *{box-sizing:border-box;}
 body{
   margin:0;
   min-height:100vh;
-  display:flex;
+  flex-direction: column;
+  display: flex;
   align-items:center;
   justify-content:center;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-  background:linear-gradient(180deg,#071029 0%, #04101c 100%);
-  color:#e6eef8;
+  background: rgba(0, 0, 0, 0.7);
+  color:#d8d8d8;
 }
 .panel{
   width:720px;
   max-width:95%;
   padding:28px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  background:linear-gradient(180deg, rgba(41, 10, 70, 0.03), rgba(255,255,255,0.01));
   border-radius:14px;
-  box-shadow:0 8px 30px rgba(2,6,23,0.7);
+  box-shadow:0 8px 30px rgba(7, 26, 112, 0.7);
   display:grid;
   grid-template-columns: 1fr 320px;
   gap:20px;
   align-items:center;
 }
 h1{font-size:20px;margin:0 0 6px}
-p.sub{margin:0 0 18px;color:#9fb7cc;font-size:13px}
+p.sub{margin:0 0 18px;color:#aecde9;font-size:13px}
 
 .dice-area{
   display:flex;
@@ -116,6 +117,11 @@ p.sub{margin:0 0 18px;color:#9fb7cc;font-size:13px}
   gap:12px;
   align-items:stretch;
 }
+h6{
+  color:#fdfdfd;
+  text-align:center;
+  font-size: x-large;
+}
 .btn{
   background: linear-gradient(180deg,var(--accent) 0%, #58c0e8 100%);
   color:#022034;
@@ -159,6 +165,8 @@ p.sub{margin:0 0 18px;color:#9fb7cc;font-size:13px}
 </head>
 <body>
 
+  <h6> Défi du Combattant 1</h6>
+
 <div class="panel">
   <div class="dice-area">
     <h1>Connexion : jet de dés</h1>
@@ -195,8 +203,8 @@ const seqEl = document.getElementById("sequence");
 const targetBadge = document.getElementById("targetBadge");
 const msgArea = document.getElementById("messageArea");
 
-let selectedDice = []; // dés sélectionnés pour roll
-let finalSequence = []; // séquence finale
+let selectedDice = []; 
+let finalSequence = []; 
 let targetSequence = [randInt(1,6), randInt(1,6), randInt(1,6)];
 
 function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
@@ -218,9 +226,12 @@ function updateSequenceVisual(){
 
   if(finalSequence.length === targetSequence.length){
     const ok = finalSequence.every((v,i)=>v===targetSequence[i]);
-    msgArea.innerHTML = ok
-      ? '<div class="msg success">✅ Succès — combinaison correcte</div>'
-      : '<div class="msg fail">❌ Mauvaise combinaison</div>';
+    if(ok){
+      msgArea.innerHTML = '<div class="msg success">✅ Succès — combinaison correcte</div>';
+      setTimeout(()=>{ window.location.href = "parcours2.html"; }, 1000);
+    } else {
+      msgArea.innerHTML = '<div class="msg fail">❌ Mauvaise combinaison</div>';
+    }
   } else msgArea.innerHTML="";
 }
 
@@ -228,7 +239,6 @@ function renderTarget(){
   targetBadge.textContent = targetSequence.join(" - ");
 }
 
-// clic sur un dé → toggle sélection
 diceRow.addEventListener("click", e=>{
   const die = e.target.closest(".die");
   if(!die) return;
@@ -244,7 +254,6 @@ diceRow.addEventListener("click", e=>{
   }
 });
 
-// rouler les dés sélectionnés
 rollBtn.addEventListener("click", ()=>{
   selectedDice.forEach(die=>{
     die.classList.add("rolling");
@@ -256,7 +265,6 @@ rollBtn.addEventListener("click", ()=>{
   });
 });
 
-// ajouter au deck final
 addBtn.addEventListener("click", ()=>{
   if(finalSequence.length + selectedDice.length > 3){
     alert("Impossible d'ajouter plus de 3 dés.");
@@ -270,7 +278,6 @@ addBtn.addEventListener("click", ()=>{
   updateSequenceVisual();
 });
 
-// effacer la séquence finale
 clearBtn.addEventListener("click", ()=>{
   finalSequence=[];
   selectedDice.forEach(d=>d.classList.remove("current"));
@@ -278,7 +285,6 @@ clearBtn.addEventListener("click", ()=>{
   updateSequenceVisual();
 });
 
-// init
 document.addEventListener("DOMContentLoaded", ()=>{
   diceRow.querySelectorAll(".die").forEach(d=>setDieValue(d,randInt(1,6)));
   renderTarget();
