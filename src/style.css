@@ -5,7 +5,7 @@ body {
     font-weight: 400;
     font-style: normal;
     background-color: #ffffff;
-    background-image: url('../public/background.png');
+    background-image: url('../public/background1.png');
     background-size: cover;
 }
 
@@ -57,7 +57,6 @@ section{
   transform: translateY(-3px);
 }
 
-
 div#app div {
   display: flex;
   flex-direction: row;
@@ -96,7 +95,6 @@ footer a:hover {
 footer a:active {
     opacity: 0.7;
 }
-
 
 @media (max-width: 480px) {
     footer p {
@@ -150,3 +148,29 @@ footer a:active {
   background-repeat: repeat-y;  
   background-position: top center;
 }
+
+#app a {
+  transition: transform 0.3s ease;
+}
+
+#app a:hover {
+  transform: scale(1.15);
+  text-transform: uppercase;
+}
+
+div a {
+  text-decoration: none;
+  text-align: center;
+  transition: transform 0.3s ease;
+  font-size: 300%;
+  color: brown;
+}
+
+@media (max-width:572px) {
+  div#app div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
