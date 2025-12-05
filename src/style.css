@@ -68,12 +68,6 @@ div#app div {
   justify-content: center;
 }
 
-body {
-  background-color: #ffffff;
-  background-image: url('../public/background.png');
-  background-size: cover;
-}
-
 footer {
     background: rgba(234, 234, 234, 0.7);
     color: #000000;
