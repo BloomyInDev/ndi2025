@@ -139,5 +139,23 @@
     <button id="progressButton">Cliquez pour charger !</button>
   </div>
 </div>
+<!-- Popup Écriture -->
+<div id="writingModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container writing-container">
+    <h2>✍️ Écrivez 300 lettres</h2>
+    <p class="writing-instruction">Racontez-nous votre histoire ! (espaces exclus du comptage)</p>
+    
+    <textarea 
+      id="writingTextarea" 
+      placeholder="Commencez à écrire... Chaque lettre compte !"
+      rows="8"
+      maxlength="1000"
+    ></textarea>
+    
+    <div id="writingCounter">0/300 (0%)</div>
+    
+    <div id="writingComment" class="comment-container"></div>
+  </div>
+</div>
 </body>
 </html>
