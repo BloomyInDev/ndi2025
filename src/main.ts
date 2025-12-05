@@ -1,1 +1,579 @@
 import './style.css'
+
+function startSectionsAnimation(): void {
+  const sections = document.querySelectorAll<HTMLElement>('.house-section');
+  const arrayFromNodeList = Array.from(sections);
+  const shuffledArray = shuffleArray(arrayFromNodeList);
+
+  shuffledArray.forEach((section, index) => {
+    setTimeout(() => {
+      section.classList.add('is-visible');
+    }, index * 500);
+
+    setTimeout(() => {
+      section.classList.remove('is-visible');
+      section.classList.add('is-invisible');
+    }, index * 500 + 4000);
+
+    setTimeout(() => {
+      section.classList.remove('is-invisible');
+      section.classList.add('is-visible');
+    }, index * 500 + 6000);
+
+    setTimeout(() => {
+      section.classList.remove('is-visible');
+      section.classList.add('is-invisible');
+    }, index * 500 + 8000);
+
+    setTimeout(() => {
+      section.classList.remove('is-invisible');
+      section.classList.add('is-turning');
+    }, index * 500 + 10000);
+  });
+}
+
+function initSectionsAnimationWhenReady(): void {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => startSectionsAnimation());
+  } else {
+    startSectionsAnimation();
+  }
+}
+
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+function shuffleText(text: string): string {
+  const array: string[] = text.split('');
+  for (let i = array.length - 1; i > 0; i--) {
+    const j: number = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array.join('');
+}
+
+function shuffleDirectText(element: HTMLElement, duration: number, shuffleInterval: number = 200): void {
+  const textNodes: Text[] = [];
+  for (const node of element.childNodes) {
+    if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()) {
+      textNodes.push(node as Text);
+    }
+  }
+
+  if (textNodes.length === 0) return;
+
+  const originalTexts: string[] = textNodes.map(node => node.textContent || '');
+
+  const applyShuffle = () => {
+    textNodes.forEach((node, index) => {
+      node.textContent = shuffleText(originalTexts[index]);
+    });
+  };
+
+  const intervalId = setInterval(applyShuffle, shuffleInterval);
+
+  setTimeout(() => {
+    clearInterval(intervalId);
+    textNodes.forEach((node, index) => {
+      node.textContent = originalTexts[index];
+    });
+  }, duration);
+}
+
+function applyShuffleToMainAndChildren(mainElement: HTMLElement, duration: number): void {
+  shuffleDirectText(mainElement, duration);
+
+  const children: HTMLCollection = mainElement.children;
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i] as HTMLElement;
+    shuffleDirectText(child, duration);
+    applyShuffleToMainAndChildren(child, duration);
+  }
+}
+
+function startShuffleEffect(duration: number = 10000): void {
+  const mainElement: HTMLElement | null = document.querySelector('main.shuffle-target');
+  if (mainElement) {
+    applyShuffleToMainAndChildren(mainElement, duration);
+  }
+}
+
+interface MathModalElements {
+  overlay: HTMLElement;
+  container: HTMLElement;
+  equation: HTMLElement;
+  input: HTMLInputElement;
+  submitBtn: HTMLButtonElement;
+  feedback: HTMLElement;
+}
+
+class MathChallengeModal {
+  private elements: MathModalElements;
+  private currentResult: number = 0;
+  private readonly tolerance: number = 0.01;
+
+  constructor() {
+    this.elements = {
+      overlay: document.getElementById('mathModalOverlay') as HTMLElement,
+      container: document.getElementById('mathModalContainer') as HTMLElement,
+      equation: document.getElementById('mathEquation') as HTMLElement,
+      input: document.getElementById('mathAnswer') as HTMLInputElement,
+      submitBtn: document.getElementById('mathSubmit') as HTMLButtonElement,
+      feedback: document.getElementById('mathFeedback') as HTMLElement
+    };
+
+    this.generateNewEquation();
+    this.initEventListeners();
+    this.showModal();
+  }
+
+  private generateNewEquation(): void {
+    const a = Math.floor(Math.random() * 20) + 1;
+    const b = Math.floor(Math.random() * 10) + 1;
+    const c = Math.floor(Math.random() * 10) + 1;
+    const d = Math.floor(Math.random() * 8) + 2;
+
+    this.currentResult = Math.round((a + b * c / d) * 100) / 100;
+
+    const equation = `${a} + ${b} × ${c} ÷ ${d} = ?`;
+    this.elements.equation.textContent = equation;
+  }
+
+  private initEventListeners(): void {
+    this.elements.submitBtn.addEventListener('click', () => this.checkAnswer());
+    this.elements.input.addEventListener('keypress', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') this.checkAnswer();
+    });
+  }
+
+  private checkAnswer(): void {
+    const userAnswer = parseFloat(this.elements.input.value.replace(',', '.'));
+    
+    if (Math.abs(userAnswer - this.currentResult) <= this.tolerance) {
+      this.onCorrectAnswer();
+    } else {
+      this.onWrongAnswer();
+    }
+  }
+
+  private onCorrectAnswer(): void {
+    alert('Parfait ! Calcul correct ! ✅');
+    this.hideModal();
+    this.unblockPageInteraction();
+    
+    new ProgressChallengeModal();
+  }
+
+  private onWrongAnswer(): void {
+    this.elements.feedback.textContent = '❌ Faux ! Essayez encore.';
+    this.elements.feedback.classList.add('error');
+    this.elements.input.value = '';
+    this.elements.input.focus();
+    
+    setTimeout(() => {
+      this.elements.feedback.textContent = '';
+      this.elements.feedback.classList.remove('error');
+      this.generateNewEquation();
+    }, 1500);
+  }
+
+  private showModal(): void {
+    this.elements.overlay.classList.remove('hidden');
+    this.elements.input.focus();
+  }
+
+  private hideModal(): void {
+    this.elements.overlay.classList.add('hidden');
+  }
+
+  private blockPageInteraction(): void {
+    document.body.style.overflow = 'hidden';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = 'none';
+  }
+
+  private unblockPageInteraction(): void {
+    document.body.style.overflow = '';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = '';
+  }
+}
+
+interface ProgressElements {
+  overlay: HTMLElement;
+  container: HTMLElement;
+  progressBar: HTMLElement;
+  progressFill: HTMLElement;
+  progressText: HTMLElement;
+  thresholdLine: HTMLElement;
+  clickButton: HTMLButtonElement;
+  status: HTMLElement;
+}
+
+class ProgressChallengeModal {
+  private elements: ProgressElements;
+  private progress: number = 0;
+  private readonly threshold: number = 65;
+  private drainInterval: number = 0;
+  private clickCooldown: number = 0;
+
+  constructor() {
+    this.elements = {
+      overlay: document.getElementById('progressModalOverlay') as HTMLElement,
+      container: document.getElementById('progressModalContainer') as HTMLElement,
+      progressBar: document.getElementById('progressBar') as HTMLElement,
+      progressFill: document.getElementById('progressFill') as HTMLElement,
+      progressText: document.getElementById('progressText') as HTMLElement,
+      thresholdLine: document.getElementById('thresholdLine') as HTMLElement,
+      clickButton: document.getElementById('progressButton') as HTMLButtonElement,
+      status: document.getElementById('progressStatus') as HTMLElement
+    };
+
+    this.initGame();
+    this.showModal();
+  }
+
+  private initGame(): void {
+    this.progress = 0;
+    this.updateDisplay();
+    this.startDrain();
+    this.initEventListeners();
+  }
+
+  private initEventListeners(): void {
+    this.elements.clickButton.addEventListener('click', () => this.handleClick());
+  }
+
+  private handleClick(): void {
+    if (this.clickCooldown > 0) return;
+    
+    this.clickCooldown = 100;
+    setTimeout(() => this.clickCooldown = 0, this.clickCooldown);
+
+    const boost = Math.max(1, 5 * (1 - this.progress / 100));
+    this.progress = Math.min(100, this.progress + boost);
+    
+    this.updateDisplay();
+    
+    if (this.progress >= this.threshold) {
+      this.onSuccess();
+    }
+  }
+
+  private startDrain(): void {
+    this.drainInterval = setInterval(() => {
+      if (this.progress > 0) {
+        this.progress = Math.max(0, this.progress - 0.5);
+        this.updateDisplay();
+      }
+    }, 50);
+  }
+
+  private updateDisplay(): void {
+    const fillHeight = (this.progress / 100) * 100;
+    this.elements.progressFill.style.height = `${fillHeight}%`;
+    
+    this.elements.progressText.textContent = `${Math.round(this.progress)}%`;
+    
+    const dangerZone = Math.max(0, (this.progress - this.threshold + 10) / 20);
+    const redIntensity = Math.min(1, dangerZone);
+    this.elements.progressFill.style.background = 
+      `linear-gradient(to top, 
+        rgb(${Math.round(255 * redIntensity)}, ${Math.round(255 * (1 - redIntensity))}, 0), 
+        #4CAF50)`;
+
+    if (this.progress >= this.threshold) {
+      this.elements.status.textContent = '🎉 Objectif atteint !';
+      this.elements.status.classList.add('success');
+    } else {
+      this.elements.status.textContent = `Objectif: ${this.threshold}% - SPAM !`;
+      this.elements.status.classList.remove('success');
+    }
+  }
+
+  private onSuccess(): void {
+    if (this.drainInterval) clearInterval(this.drainInterval);
+    alert('🎉 Seuil atteint ! Vous avez gagné !');
+    this.hideModal();
+    this.unblockPageInteraction();
+    
+    new WritingChallengeModal();
+  }
+
+  private showModal(): void {
+    this.elements.overlay.classList.remove('hidden');
+  }
+
+  private hideModal(): void {
+    this.elements.overlay.classList.add('hidden');
+    if (this.drainInterval) clearInterval(this.drainInterval);
+  }
+
+  private blockPageInteraction(): void {
+    document.body.style.overflow = 'hidden';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = 'none';
+  }
+
+  private unblockPageInteraction(): void {
+    document.body.style.overflow = '';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = '';
+  }
+}
+
+// POPUP ÉCRITURE 300 LETTRES ✅ SANS ERREUR TYPESCRIPT
+interface WritingElements {
+  overlay: HTMLElement;
+  container: HTMLElement;
+  textarea: HTMLTextAreaElement;
+  counter: HTMLElement;
+  commentContainer: HTMLElement;
+}
+
+const WRITING_COMMENTS = [
+  "Qu'est-ce que vous écrivez bien!",
+  "vous êtes une source d'inspiration pour moi",
+  "encore un petit effort!",
+  "vous y êtes presque",
+  "je suis ému par ce que vous écrivez",
+  "vous devez vous reconvertir en écrivain",
+  "continuez sur cette voie",
+  "pourrais-je vous demander un autographe?"
+];
+
+class WritingChallengeModal {
+  private elements: WritingElements;
+  private letterCount: number = 0;
+  private readonly targetLetters: number = 300;
+  private lastKeyTime: number = 0;
+  private commentInterval: number = 0;
+  private inactivityTimer: number = 0;
+  private isActive: boolean = true;
+
+  constructor() {
+    this.elements = {
+      overlay: document.getElementById('writingModalOverlay') as HTMLElement,
+      container: document.getElementById('writingModalContainer') as HTMLElement,
+      textarea: document.getElementById('writingTextarea') as HTMLTextAreaElement,
+      counter: document.getElementById('writingCounter') as HTMLElement,
+      commentContainer: document.getElementById('writingComment') as HTMLElement
+    };
+
+    this.initGame();
+    this.showModal();
+  }
+
+  private initGame(): void {
+    this.letterCount = 0;
+    this.lastKeyTime = Date.now();
+    this.isActive = true;
+    this.elements.textarea.value = '';
+    this.updateCounter();
+    this.startInactivityCheck();
+    this.initEventListeners();
+  }
+
+  private initEventListeners(): void {
+    // ✅ CORRIGÉ : Event au lieu de InputEvent
+    this.elements.textarea.addEventListener('input', (e: Event) => {
+      this.onInput(e);
+    });
+  }
+
+  private onInput(e: Event): void {
+    this.lastKeyTime = Date.now();
+    this.isActive = true;
+    
+    // ✅ Accès sûr au target
+    const textarea = e.target as HTMLTextAreaElement;
+    const text = textarea.value;
+    this.letterCount = text.replace(/\s/g, '').length;
+    
+    this.updateCounter();
+    
+    if (this.letterCount >= this.targetLetters) {
+      this.onSuccess();
+    }
+    
+    if (!this.commentInterval) {
+      this.startComments();
+    }
+  }
+
+  private startComments(): void {
+    this.commentInterval = setInterval(() => {
+      if (this.isActive) {
+        const randomComment = WRITING_COMMENTS[Math.floor(Math.random() * WRITING_COMMENTS.length)];
+        this.elements.commentContainer.textContent = randomComment;
+        this.elements.commentContainer.classList.add('show');
+        
+        setTimeout(() => {
+          this.elements.commentContainer.classList.remove('show');
+        }, 4000);
+      }
+    }, 2000);
+  }
+
+  private startInactivityCheck(): void {
+    this.inactivityTimer = setInterval(() => {
+      if (Date.now() - this.lastKeyTime > 4000) {
+        this.isActive = false;
+      } else {
+        this.isActive = true;
+      }
+    }, 1000);
+  }
+
+  private updateCounter(): void {
+    const progress = Math.round((this.letterCount / this.targetLetters) * 100);
+    this.elements.counter.textContent = `${this.letterCount}/${this.targetLetters} (${progress}%)`;
+    
+    if (this.letterCount >= this.targetLetters) {
+      this.elements.counter.style.color = '#4CAF50';
+    }
+  }
+
+  private onSuccess(): void {
+    if (this.commentInterval) clearInterval(this.commentInterval);
+    if (this.inactivityTimer) clearInterval(this.inactivityTimer);
+    alert('🎉 300 lettres écrites ! Chef-d’œuvre accompli !');
+    this.hideModal();
+    this.unblockPageInteraction();
+    
+    initSectionsAnimationWhenReady();
+    startShuffleEffect(10000);
+  }
+
+  private showModal(): void {
+    this.elements.overlay.classList.remove('hidden');
+    this.elements.textarea.focus();
+  }
+
+  private hideModal(): void {
+    this.elements.overlay.classList.add('hidden');
+    if (this.commentInterval) clearInterval(this.commentInterval);
+    if (this.inactivityTimer) clearInterval(this.inactivityTimer);
+  }
+
+  private blockPageInteraction(): void {
+    document.body.style.overflow = 'hidden';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = 'none';
+  }
+
+  private unblockPageInteraction(): void {
+    document.body.style.overflow = '';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = '';
+  }
+}
+
+interface ModalButton extends HTMLButtonElement {
+  dataset: {
+    buttonId?: string;
+  };
+}
+
+class ModalGame {
+  private overlay: HTMLElement;
+  private buttonsGrid: HTMLElement;
+  private correctButtonIndex: number = 0;
+  private totalButtons: number = 5;
+
+  constructor() {
+    this.overlay = document.getElementById('modalOverlay') as HTMLElement;
+    this.buttonsGrid = document.getElementById('buttonsGrid') as HTMLElement;
+
+    this.resetCorrectButton();
+    this.init();
+  }
+
+  private init(): void {
+    this.renderButtons();
+    this.blockPageInteraction();
+    this.showModal();
+  }
+
+  private resetCorrectButton(): void {
+    this.correctButtonIndex = Math.floor(Math.random() * this.totalButtons);
+  }
+
+  private renderButtons(): void {
+    this.buttonsGrid.replaceChildren();
+
+    for (let i = 0; i < this.totalButtons; i++) {
+      const button = document.createElement('button') as ModalButton;
+      button.className = 'modal-btn';
+      button.textContent = `${i + 1}`;
+      button.dataset.buttonId = i.toString();
+
+      button.addEventListener('click', (e: MouseEvent) =>
+        this.handleButtonClick(e, i)
+      );
+
+      this.buttonsGrid.appendChild(button);
+    }
+  }
+
+  private handleButtonClick(event: MouseEvent, buttonIndex: number): void {
+    const button = event.currentTarget as ModalButton;
+
+    if (buttonIndex === this.correctButtonIndex) {
+      this.onCorrectButton();
+    } else {
+      this.onWrongButton(button);
+    }
+  }
+
+  private onCorrectButton(): void {
+    alert('Bravo ! Vous avez trouvé le bon bouton ! 🎉');
+    this.hideModal();
+    this.unblockPageInteraction();
+    
+    new MathChallengeModal();
+  }
+
+  private onWrongButton(button: ModalButton): void {
+    button.classList.add('wrong');
+    setTimeout(() => button.classList.remove('wrong'), 300);
+
+    this.totalButtons += 2;
+    this.resetCorrectButton();
+    this.renderButtons();
+  }
+
+  private showModal(): void {
+    this.overlay.classList.remove('hidden');
+  }
+
+  private hideModal(): void {
+    this.overlay.classList.add('hidden');
+  }
+
+  private blockPageInteraction(): void {
+    document.body.style.overflow = 'hidden';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) {
+      main.style.pointerEvents = 'none';
+    }
+  }
+
+  private unblockPageInteraction(): void {
+    document.body.style.overflow = '';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) {
+      main.style.pointerEvents = '';
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new ModalGame();
+});
