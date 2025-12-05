@@ -114,7 +114,7 @@
 <!-- Popup Calcul Mathématique -->
 <div id="mathModalOverlay" class="modal-overlay hidden">
   <div class="modal-container">
-    <h2>🔢 Résolvez le calcul</h2>
+    <h2>🔢 Résolvez le calcul, arrondissez à deux chiffres après la virgule si nécessaire</h2>
     <p class="equation-container">
       <span id="mathEquation"></span>
     </p>
@@ -195,6 +195,20 @@
     </div>
     
     <div id="colorMatchFeedback"></div>
+  </div>
+</div>
+<!-- Popup Confirmation -->
+<div id="confirmationOverlay" class="modal-overlay hidden">
+  <div class="modal-container confirmation-container">
+    <h2>🤔 Confirmation</h2>
+    <p class="confirmation-text">Voulez-vous vraiment consulter cette page ?</p>
+    
+    <div class="confirmation-buttons">
+      <button id="confirmYesLeft" class="confirm-btn yes-btn">Oui</button>
+      <button id="confirmYesRight" class="confirm-btn yes-btn">Oui</button>
+    </div>
+    
+    <div id="confirmationFeedback"></div>
   </div>
 </div>
 </body>
