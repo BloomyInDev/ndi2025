@@ -16,6 +16,11 @@ section{
     background: rgba(234, 234, 234, 0.7);
     border-top: 2px solid #ffffff;
     border-bottom: 2px solid #ffffff;
+    transition: 0,2s ease;
+}
+
+section:hover {
+  transform: scale(1.05);
 }
 
 .houses-nav ul {
