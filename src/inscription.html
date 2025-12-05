@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Connexion par dés — prototype</title>
+<style>
+:root{
+  --bg: #0f1724;
+  --card: #0b1220;
+  --accent: #7dd3fc;
+  --pip: #051023;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background:linear-gradient(180deg,#071029 0%, #04101c 100%);
+  color:#e6eef8;
+}
+.panel{
+  width:720px;
+  max-width:95%;
+  padding:28px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border-radius:14px;
+  box-shadow:0 8px 30px rgba(2,6,23,0.7);
+  display:grid;
+  grid-template-columns: 1fr 320px;
+  gap:20px;
+  align-items:center;
+}
+h1{font-size:20px;margin:0 0 6px}
+p.sub{margin:0 0 18px;color:#9fb7cc;font-size:13px}
+
+.dice-area{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-start;
+}
+.dice-row{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.die{
+  width:82px;
+  height:82px;
+  background:linear-gradient(180deg,#e9f7ff 0%, #d8efff 100%);
+  border-radius:12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding:12px;
+  gap:6px;
+  box-shadow: 0 6px 18px rgba(5,10,20,0.5), inset 0 -4px 8px rgba(255,255,255,0.5);
+  cursor:pointer;
+  user-select:none;
+  transition: transform .22s ease, box-shadow .22s ease, outline .2s ease;
+  position:relative;
+}
+.die.current {
+  outline:4px solid rgba(125,211,252,0.5);
+  transform: scale(1.05);
+}
+.die.flash {
+  outline:4px solid rgba(255,255,255,0.4);
+}
+.pip{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+}
+.pip > span{
+  display:block;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:var(--pip);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.45), inset 0 2px 3px rgba(255,255,255,0.06);
+}
+
+.die--v1 .pip:nth-child(5){opacity:1}
+.die--v2 .pip:nth-child(1), .die--v2 .pip:nth-child(9){opacity:1}
+.die--v3 .pip:nth-child(1), .die--v3 .pip:nth-child(5), .die--v3 .pip:nth-child(9){opacity:1}
+.die--v4 .pip:nth-child(1), .die--v4 .pip:nth-child(3), .die--v4 .pip:nth-child(7), .die--v4 .pip:nth-child(9){opacity:1}
+.die--v5 .pip:nth-child(1), .die--v5 .pip:nth-child(3), .die--v5 .pip:nth-child(5), .die--v5 .pip:nth-child(7), .die--v5 .pip:nth-child(9){opacity:1}
+.die--v6 .pip:nth-child(1), .die--v6 .pip:nth-child(4), .die--v6 .pip:nth-child(7),
+.die--v6 .pip:nth-child(3), .die--v6 .pip:nth-child(6), .die--v6 .pip:nth-child(9){opacity:1}
+
+.die.rolling{
+  animation: roll 520ms cubic-bezier(.2,.8,.2,1);
+}
+@keyframes roll{
+  0%   { transform: rotateX(0) rotateY(0) }
+  30%  { transform: rotateX(180deg) rotateY(90deg) }
+  60%  { transform: rotateX(270deg) rotateY(180deg) }
+  100% { transform: rotateX(360deg) rotateY(360deg) }
+}
+
+.controls{
+  padding:12px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:10px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:stretch;
+}
+.btn{
+  background: linear-gradient(180deg,var(--accent) 0%, #58c0e8 100%);
+  color:#022034;
+  font-weight:700;
+  padding:10px 12px;
+  border-radius:10px;
+  border:0;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(32,84,96,0.15);
+}
+.btn.ghost{
+  background:transparent;
+  color:#cfeffb;
+  border:1px solid rgba(255,255,255,0.06);
+}
+
+.sequence{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.badge{
+  min-width:36px;
+  height:36px;
+  border-radius:8px;
+  background:rgba(255,255,255,0.02);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#cfeffb;
+  border:1px dashed rgba(255,255,255,0.03);
+}
+
+.msg{
+  padding:10px;border-radius:8px;font-weight:700;text-align:center;
+}
+.msg.success{ background:linear-gradient(90deg,#052b15,#0b3f22); color:#bffdd1; }
+.msg.fail{ background:linear-gradient(90deg,#3a0810,#500b12); color:#ffd1d1; }
+
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <div class="dice-area">
+    <h1>Connexion : jet de dés</h1>
+    <p class="sub">Sélectionne 1 à 3 dés → Rouler → Ajouter au deck final. Valide si correspondance avec la cible.</p>
+
+    <div class="dice-row" id="diceRow">
+      <div class="die" data-index="0"><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div></div>
+      <div class="die" data-index="1"><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div></div>
+      <div class="die" data-index="2"><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div><div class="pip"><span></span></div></div>
+    </div>
+  </div>
+
+  <aside class="controls">
+    <button id="rollBtn" class="btn">🎲 Rouler dés sélectionnés</button>
+    <button id="addBtn" class="btn ghost">➕ Ajouter au deck final</button>
+    <button id="clearBtn" class="btn ghost">Effacer</button>
+
+    <div class="hint">Séquence finale :</div>
+    <div class="sequence" id="sequence"></div>
+
+    <div class="hint">Cible (demo) :</div>
+    <div class="badge" id="targetBadge">—</div>
+
+    <div id="messageArea"></div>
+  </aside>
+</div>
+
+<script>
+const diceRow = document.getElementById("diceRow");
+const rollBtn = document.getElementById("rollBtn");
+const addBtn = document.getElementById("addBtn");
+const clearBtn = document.getElementById("clearBtn");
+const seqEl = document.getElementById("sequence");
+const targetBadge = document.getElementById("targetBadge");
+const msgArea = document.getElementById("messageArea");
+
+let selectedDice = []; // dés sélectionnés pour roll
+let finalSequence = []; // séquence finale
+let targetSequence = [randInt(1,6), randInt(1,6), randInt(1,6)];
+
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
+
+function setDieValue(dieEl, v){
+  dieEl.classList.remove(...Array.from(dieEl.classList).filter(c=>c.startsWith("die--v")));
+  dieEl.classList.add("die--v"+v);
+  dieEl.setAttribute("data-value", v);
+}
+
+function updateSequenceVisual(){
+  seqEl.innerHTML="";
+  finalSequence.forEach(v=>{
+    const b=document.createElement("div");
+    b.className="badge";
+    b.textContent=v;
+    seqEl.appendChild(b);
+  });
+
+  if(finalSequence.length === targetSequence.length){
+    const ok = finalSequence.every((v,i)=>v===targetSequence[i]);
+    msgArea.innerHTML = ok
+      ? '<div class="msg success">✅ Succès — combinaison correcte</div>'
+      : '<div class="msg fail">❌ Mauvaise combinaison</div>';
+  } else msgArea.innerHTML="";
+}
+
+function renderTarget(){
+  targetBadge.textContent = targetSequence.join(" - ");
+}
+
+// clic sur un dé → toggle sélection
+diceRow.addEventListener("click", e=>{
+  const die = e.target.closest(".die");
+  if(!die) return;
+
+  if(selectedDice.includes(die)){
+    die.classList.remove("current");
+    selectedDice = selectedDice.filter(d=>d!==die);
+  } else {
+    if(selectedDice.length < 3){
+      die.classList.add("current");
+      selectedDice.push(die);
+    }
+  }
+});
+
+// rouler les dés sélectionnés
+rollBtn.addEventListener("click", ()=>{
+  selectedDice.forEach(die=>{
+    die.classList.add("rolling");
+    setTimeout(()=>{
+      const v = randInt(1,6);
+      setDieValue(die,v);
+      die.classList.remove("rolling");
+    },500);
+  });
+});
+
+// ajouter au deck final
+addBtn.addEventListener("click", ()=>{
+  if(finalSequence.length + selectedDice.length > 3){
+    alert("Impossible d'ajouter plus de 3 dés.");
+    return;
+  }
+  selectedDice.forEach(die=>{
+    finalSequence.push(parseInt(die.getAttribute("data-value")));
+    die.classList.remove("current");
+  });
+  selectedDice=[];
+  updateSequenceVisual();
+});
+
+// effacer la séquence finale
+clearBtn.addEventListener("click", ()=>{
+  finalSequence=[];
+  selectedDice.forEach(d=>d.classList.remove("current"));
+  selectedDice=[];
+  updateSequenceVisual();
+});
+
+// init
+document.addEventListener("DOMContentLoaded", ()=>{
+  diceRow.querySelectorAll(".die").forEach(d=>setDieValue(d,randInt(1,6)));
+  renderTarget();
+});
+</script>
+</body>
+</html>
