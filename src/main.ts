@@ -192,6 +192,7 @@ class MathChallengeModal {
     this.elements.overlay.classList.add('hidden');
   }
 
+  // @ts-ignore
   private blockPageInteraction(): void {
     document.body.style.overflow = 'hidden';
     const main = document.querySelector('main') as HTMLElement;
@@ -315,6 +316,7 @@ class ProgressChallengeModal {
     if (this.drainInterval) clearInterval(this.drainInterval);
   }
 
+  // @ts-ignore
   private blockPageInteraction(): void {
     document.body.style.overflow = 'hidden';
     const main = document.querySelector('main') as HTMLElement;
@@ -458,6 +460,7 @@ class WritingChallengeModal {
     if (this.inactivityTimer) clearInterval(this.inactivityTimer);
   }
 
+  // @ts-ignore
   private blockPageInteraction(): void {
     document.body.style.overflow = 'hidden';
     const main = document.querySelector('main') as HTMLElement;
@@ -561,7 +564,7 @@ class AlphabetChallengeModal {
   private hideModal(): void {
     this.elements.overlay.classList.add('hidden');
   }
-
+  // @ts-ignore
   private blockPageInteraction(): void {
     document.body.style.overflow = 'hidden';
     const main = document.querySelector('main') as HTMLElement;
@@ -594,6 +597,7 @@ interface CircleData {
 class ColorMatchModal {
   private elements: ColorMatchElements;
   private readonly colors: string[] = ['#8B5CF6', '#3B82F6', '#EAB308', '#EF4444'];
+  // @ts-ignore
   private readonly colorNames: string[] = ['violet', 'blue', 'yellow', 'red'];
   private leftCircles: CircleData[] = [];
   private rightCircles: CircleData[] = [];
@@ -644,6 +648,7 @@ class ColorMatchModal {
     });
   }
 
+  // @ts-ignore
   private createCircle(color: string, side: 'left' | 'right', index: number): HTMLElement {
     const circle = document.createElement('div');
     circle.className = 'color-circle';
@@ -813,6 +818,7 @@ class ColorMatchModal {
     this.cancelSelection();
   }
 
+  // @ts-ignore
   private blockPageInteraction(): void {
     document.body.style.overflow = 'hidden';
     const main = document.querySelector('main') as HTMLElement;
@@ -886,6 +892,7 @@ class ConfirmationModal {
     this.elements.overlay.classList.add('hidden');
   }
 
+  // @ts-ignore
   private blockPageInteraction(): void {
     document.body.style.overflow = 'hidden';
     const main = document.querySelector('main') as HTMLElement;
