@@ -15,7 +15,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: resolve(__dirname, "src/index.html"),
-                biblioteque: resolve(__dirname, "src/biblioteque.html"),
+                bibliotheque: resolve(__dirname, "src/bibliotheque.html"),
                 centre_technique: resolve(
                     __dirname,
                     "src/centre_technique.html"
