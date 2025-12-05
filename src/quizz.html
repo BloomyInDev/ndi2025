@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz de votre dépendance numérique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <header>
+        <nav class="houses-nav">
+            <ul>
+                <li><a href="maison.html">🏠 Maison 1<br><span>Outils Libres</span></a></li>
+                <li><a href="ecole.html">🏫 Maison 2<br><span>École Responsable</span></a></li>
+                <li><a href="centre_technique.html">🖥️ Maison 3<br><span>Centre Technique</span></a></li>
+                <li><a href="bibliotheque.html">📚 Maison 4<br><span>Bibliothèque Ouverte</span></a></li>
+                <li><a href="communication.html">📨 Maison 5<br><span>Communication</span></a></li>
+                <li><a href="mairie.html">🧱 Maison 6<br><span>Mairie Numérique</span></a></li>
+            </ul>
+        </nav>
+    </header>
+</head>
+<body class="bg_quizz">
+    <section>
+        <h1>Petit quizz sur notre démarche :</h1>
+    </section>
+    
+    <section class="question">
+        <p>1. Pourquoi le projet NIRD encourage-t-il l’utilisation de logiciels libres comme Linux ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 1)">Parce que ces logiciels sont toujours payants</button>
+            <button onclick="checkAnswer('b', 1)">Parce que ces logiciels consomment plus d’énergie</button>
+            <button onclick="checkAnswer('c', 1)">Parce qu’ils sont imposés par les grandes entreprises technologique</button>
+            <button onclick="checkAnswer('d', 1)">Pour lutter contre l’obsolescence programmée et favoriser l’autonomie technologique</button>
+            <button class = "hided" onclick="checkAnswer('e', 1)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>2. Parmi les actions suivantes, laquelle est encouragée par le projet NIRD pour réduire l’empreinte écologique du numérique ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 2)">Acheter de nouveaux ordinateurs chaque année</button>
+            <button onclick="checkAnswer('b', 2)">Utiliser uniquement des logiciels payants</button>
+            <button onclick="checkAnswer('c', 2)">Réemployer et reconditionner le matériel informatique existant</button>
+            <button onclick="checkAnswer('d', 2)">Augmenter le temps d’écran des élèves</button>
+            <button class = "hided" onclick="checkAnswer('e', 2)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>3. Quel est l’un des objectifs principaux du projet NIRD ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 3)">Augmenter la consommation énergétique des établissements scolaires</button>
+            <button onclick="checkAnswer('b', 3)">Promouvoir un numérique inclusif, responsable et durable</button>
+            <button onclick="checkAnswer('c', 3)">Remplacer tous les ordinateurs par des tablettes</button>
+            <button onclick="checkAnswer('d', 3)">Supprimer l’utilisation du numérique dans les écoles</button>
+            <button class = "hided" onclick="checkAnswer('e', 3)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>4. Quelle est l’une des actions proposées par le projet NIRD pour sensibiliser les élèves et les équipes éducatives ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 4)">Organiser des concours de jeux vidéo en ligne</button>
+            <button onclick="checkAnswer('b', 4)">Distribuer des smartphones à tous les élèves</button>
+            <button onclick="checkAnswer('c', 4)">Mener des ateliers et des formations sur la sobriété numérique</button>
+            <button onclick="checkAnswer('d', 4)">Supprimer tous les cours de numérique</button>
+            <button class = "hided" onclick="checkAnswer('e', 4)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>5. Comment le projet NIRD propose-t-il de mutualiser les ressources numériques ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 5)">En vendant des licences logicielles</button>
+            <button onclick="checkAnswer('b', 5)">En limitant l’accès aux ressources aux seuls enseignants></button>
+            <button onclick="checkAnswer('c', 5)">En interdisant l’accès à Internet dans les écoles</button>
+            <button onclick="checkAnswer('d', 5)">En utilisant la "Forge des communs numériques éducatifs" pour partager des outils libres</button>
+            <button class = "hided" onclick="checkAnswer('e', 5)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>6. Quel est l’un des publics cibles du projet NIRD ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 6)"> Les élèves et éco-délégués</button>
+            <button onclick="checkAnswer('b', 6)">Les entreprises technologiques internationales</button>
+            <button onclick="checkAnswer('c', 6)">Les seuls parents d’élèves</button>
+            <button onclick="checkAnswer('d', 6)">Les acteurs politiques nationaux</button>
+            <button class = "hided" onclick="checkAnswer('e', 6)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>7. Quelle est l’une des valeurs fondamentales du projet NIRD ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 7)">L’exclusion des établissements ruraux</button>
+            <button onclick="checkAnswer('b', 7)">L’inclusion pour rendre le numérique accessible à tous</button>
+            <button onclick="checkAnswer('c', 7)">La dépendance aux grandes entreprises technologiques</button>
+            <button onclick="checkAnswer('d', 7)">L’augmentation de la consommation énergétique</button>
+            <button class = "hided" onclick="checkAnswer('e', 7)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>8. Que signifie l’acronyme NIRD ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 8)">Numérique International et Rapide Développé</button>
+            <button onclick="checkAnswer('b', 8)">Numérique Inclusif, Responsable et Durable</button>
+            <button onclick="checkAnswer('c', 8)">Nouveau Internet pour les Régions et Départements</button>
+            <button onclick="checkAnswer('d', 8)">Numérique Innovant et Récent pour les Directeurs</button>
+            <button class = "hided" onclick="checkAnswer('e', 8)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>9. Quelle action le projet NIRD propose-t-il pour accompagner les établissements dans leur transition numérique ?</p>
+        <div class="options">
+            <button onclick="checkAnswer('a', 9)">Leur offrir un accompagnement personnalisé pour réduire leur dépendance aux géants du numérique</button>
+            <button onclick="checkAnswer('b', 9)">Les laisser sans soutien</button>
+            <button onclick="checkAnswer('c', 9)">Leur imposer des logiciels payants</button>
+            <button onclick="checkAnswer('d', 9)">Leur interdire l’utilisation d’Internet</button>
+            <button class = "hided" onclick="checkAnswer('e', 9)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <section class="question">
+        <p>10. Quel est l’un des outils proposés pour favoriser la co-construction de solutions numériques locales ?</p>
+        <div class="options">
+        <button onclick="checkAnswer('a', 10)">La suppression des cours d’informatique</button>
+        <button onclick="checkAnswer('b', 10)">L’interdiction des outils numériques</button>
+        <button onclick="checkAnswer('c', 10)">La création de projets locaux et autonomes adaptés aux besoins spécifiques des écoles</button>
+        <button onclick="checkAnswer('d', 10)">L’achat de logiciels propriétaires</button>
+        <button class = "hided" onclick="checkAnswer('e', 10)">Avoir tous faux</button>
+        </div>
+    </section>
+
+    <div id="result"></div>
+    
+    <script src="quizz.js"></script>
+      <footer>
+        <p>&copy; 2025 NDI – Tous droits réservés.</p>
+        <p>
+            <a href="a-propos.html">À propos</a> |
+            <a href="mentions-legales.html">Mentions légales</a> |
+            <a href="contact.html">Contact</a>
+        </p>
+        <p>
+          <a href="quizz.html">Réaliser notre petit quizz</a>
+        </p>
+    </footer>
+  </body>
+</body>
+</html>

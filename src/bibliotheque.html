@@ -21,10 +21,7 @@
         </nav>
         <title>La Bibliothèque Ouverte - NDI</title>
     </header>
-</head>
-<body>
-    
-    <main>
+    <main class="shuffle-target">
         <nav aria-label="Fil d’Ariane" class="breadcrumb">
             <ol>
                 <li><a href="index.html">Accueil</a></li>
@@ -101,6 +98,120 @@
             <a href="mentions-legales.html">Mentions légales</a> |
             <a href="contact.html">Contact</a>
         </p>
+                <p>
+          <a href="quizz.html">Réaliser notre petit quizz</a>
+        </p>
     </footer>
+    <script type="module" src="main.ts"></script>
+
+
+    <!-- Modal Overlay et Popup -->
+<div id="modalOverlay" class="modal-overlay">
+  <div class="modal-container">
+    <h2>Trouvez le bon bouton !</h2>
+    <p>Un seul bouton fonctionne... Bonne chance !</p>
+    <div class="buttons-grid" id="buttonsGrid"></div>
+  </div>
+</div>
+<!-- Popup Calcul Mathématique -->
+<div id="mathModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container">
+    <h2>🔢 Résolvez le calcul, arrondissez à deux chiffres après la virgule si nécessaire</h2>
+    <p class="equation-container">
+      <span id="mathEquation"></span>
+    </p>
+    <input type="text" id="mathAnswer" placeholder="Réponse (utilisez . pour la virgule)" maxlength="10">
+    <button id="mathSubmit">Vérifier</button>
+    <div id="mathFeedback"></div>
+  </div>
+</div>
+<!-- Popup Progression -->
+<div id="progressModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container progress-container">
+    <h2>⚡ Atteignez le seuil !</h2>
+    <p id="progressStatus">Objectif: 65% - SPAM !</p>
+    
+    <div class="progress-container-vertical">
+      <div id="progressBar" class="progress-bar-vertical">
+        <div id="thresholdLine" class="threshold-line"></div>
+        <div id="progressFill" class="progress-fill-vertical"></div>
+      </div>
+      <div id="progressText">0%</div>
+    </div>
+    
+    <button id="progressButton">Cliquez pour charger !</button>
+  </div>
+</div>
+<!-- Popup Écriture -->
+<div id="writingModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container writing-container">
+    <h2>✍️ Écrivez 300 lettres</h2>
+    <p class="writing-instruction">Racontez-nous votre histoire ! (espaces exclus du comptage)</p>
+    
+    <textarea 
+      id="writingTextarea" 
+      placeholder="Commencez à écrire... Chaque lettre compte !"
+      rows="8"
+      maxlength="1000"
+    ></textarea>
+    
+    <div id="writingCounter">0/300 (0%)</div>
+    
+    <div id="writingComment" class="comment-container"></div>
+  </div>
+</div>
+<!-- Popup Alphabet Manquant -->
+<div id="alphabetModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container alphabet-container">
+    <h2>🔤 Trouvez la lettre manquante</h2>
+    
+    <div class="alphabet-display" id="alphabetDisplay">
+      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+    </div>
+    
+    <input 
+      type="text" 
+      id="alphabetAnswer" 
+      placeholder="Quelle lettre manque ?" 
+      maxlength="1"
+      autocomplete="off"
+    >
+    
+    <button id="alphabetSubmit">Valider</button>
+    
+    <div id="alphabetFeedback"></div>
+  </div>
+</div>
+<!-- Popup Connexion Couleurs -->
+<div id="colorMatchOverlay" class="modal-overlay hidden">
+  <div class="modal-container color-match-container">
+    <h2>🎨 Reliez les couleurs</h2>
+    <p>Cliquez sur un rond puis sur sa jumelle de l'autre côté !</p>
+    
+    <div class="color-match-game" id="colorMatchGameArea">
+      <div class="color-column" id="colorMatchLeft"></div>
+      
+      <svg class="color-match-svg" id="colorMatchSvg"></svg>
+      
+      <div class="color-column" id="colorMatchRight"></div>
+    </div>
+    
+    <div id="colorMatchFeedback"></div>
+  </div>
+</div>
+<!-- Popup Confirmation -->
+<div id="confirmationOverlay" class="modal-overlay hidden">
+  <div class="modal-container confirmation-container">
+    <h2>🤔 Confirmation</h2>
+    <p class="confirmation-text">Voulez-vous vraiment consulter cette page ?</p>
+    
+    <div class="confirmation-buttons">
+      <button id="confirmYesLeft" class="confirm-btn yes-btn">Oui</button>
+      <button id="confirmYesRight" class="confirm-btn yes-btn">Oui</button>
+    </div>
+    
+    <div id="confirmationFeedback"></div>
+  </div>
+</div>
 </body>
 </html>

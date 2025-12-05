@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Labyrinthe Dynamique - Timer</title>
+<style>
+:root{
+  --bg: #0f1724;
+  --card: #0b1220;
+  --accent: #e7e7e7;
+  --text:#bdbdbd;
+  --highlight:#7dd3fc;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  min-height:100vh;
+  flex-direction: column;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background:linear-gradient(180deg,#424242 0%,#4b4b4b 100%);
+  color:var(--text);
+}
+
+h6{
+  color:#fdfdfd;
+  text-align:center;
+  font-size: x-large;
+}
+
+.panel{
+  width:450px;
+  padding:20px;
+  background:linear-gradient(180deg, rgba(97, 22, 168, 0.03), rgba(255,255,255,0.01));
+  border-radius:12px;
+  box-shadow:0 8px 30px rgba(7, 26, 112, 0.7);
+  text-align:center;
+}
+h1{margin:0 0 10px;font-size:20px;}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, 80px);
+  gap:10px;
+  justify-content:center;
+  margin:20px 0;
+}
+.cell{
+  width:80px;
+  height:80px;
+  background:#0b1220;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  font-weight:700;
+  cursor:pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.cell:hover{ transform: scale(1.05); box-shadow:0 4px 10px rgba(125,211,252,0.5);}
+.sequence{display:flex;gap:6px;justify-content:center;margin:10px 0;flex-wrap:wrap;}
+.badge{
+  min-width:30px;height:30px;border-radius:6px;background:rgba(255,255,255,0.02);
+  display:flex;align-items:center;justify-content:center;color:var(--text);
+  border:1px dashed rgba(255,255,255,0.03);font-weight:700;
+}
+.msg{margin-top:10px;padding:10px;border-radius:6px;font-weight:700;}
+.msg.success{background:linear-gradient(90deg,#052b15,#0b3f22);color:#bffdd1;}
+.msg.fail{background:linear-gradient(90deg,#3a0810,#500b12);color:#ffd1d1;}
+.timer{
+  margin-top:10px;font-weight:700;font-size:16px;color:#7dd3fc;
+}
+.btn{margin-top:10px;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700;background:linear-gradient(180deg,var(--accent) 0%,#58c0e8 100%);}
+</style>
+</head>
+<body>
+
+    <h6> Défi du Combattant 2</h6>
+
+<div class="panel">
+  <h1>Connexion : Labyrinthe Dynamique</h1>
+  <p>Reproduis la séquence cible de 12 chiffres en moins de 15 secondes. La grille change après chaque erreur ou temps écoulé.</p>
+  <div class="grid" id="grid"></div>
+  <div>Sequence cible (demo): <span id="target">—</span></div>
+  <div class="sequence" id="sequence"></div>
+  <div class="timer" id="timer">Temps restant : 15s</div>
+  <div id="message"></div>
+  <button class="btn" id="resetBtn">Réinitialiser</button>
+</div>
+
+<script>
+const gridEl = document.getElementById("grid");
+const seqEl = document.getElementById("sequence");
+const targetEl = document.getElementById("target");
+const msgEl = document.getElementById("message");
+const timerEl = document.getElementById("timer");
+const resetBtn = document.getElementById("resetBtn");
+
+let cells = [];
+let finalSequence = [];
+let targetSequence = [];
+const SEQ_LENGTH = 12; 
+const TIME_LIMIT = 15; 
+let timeLeft = TIME_LIMIT;
+let timerInterval = null;
+
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+
+function createGrid(){
+  gridEl.innerHTML = "";
+  let numbers = [1,2,3,4,5,6,7,8,9];
+  numbers.sort(()=>Math.random()-0.5);
+  cells = [];
+  for(let i=0;i<9;i++){
+    const div = document.createElement("div");
+    div.className="cell";
+    div.textContent = numbers[i];
+    div.dataset.value = numbers[i];
+    div.addEventListener("click", ()=>cellClick(div));
+    gridEl.appendChild(div);
+    cells.push(div);
+  }
+}
+
+function generateTarget(){
+  targetSequence = [];
+  for(let i=0;i<SEQ_LENGTH;i++){
+    targetSequence.push(randInt(1,9));
+  }
+  targetEl.textContent = targetSequence.join(" - ");
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  timeLeft = TIME_LIMIT;
+  timerEl.textContent = `Temps restant : ${timeLeft}s`;
+  timerInterval = setInterval(()=>{
+    timeLeft--;
+    timerEl.textContent = `Temps restant : ${timeLeft}s`;
+    if(timeLeft <= 0){
+      clearInterval(timerInterval);
+      failAttempt("⏱ Temps écoulé ! Nouvelle tentative");
+    }
+  },1000);
+}
+
+function cellClick(cell){
+  if(finalSequence.length >= SEQ_LENGTH || timeLeft <=0) return;
+  finalSequence.push(parseInt(cell.dataset.value));
+  updateSequenceVisual();
+}
+
+function updateSequenceVisual(){
+  seqEl.innerHTML="";
+  finalSequence.forEach(v=>{
+    const b=document.createElement("div");
+    b.className="badge";
+    b.textContent=v;
+    seqEl.appendChild(b);
+  });
+
+  if(finalSequence.length===SEQ_LENGTH){
+    const ok = finalSequence.every((v,i)=>v===targetSequence[i]);
+    if(ok){
+      msgEl.innerHTML='<div class="msg success">✅ Succès — combinaison correcte</div>';
+      clearInterval(timerInterval);
+      setTimeout(()=>{window.location.href="index.html";},1000);
+    } else {
+      failAttempt("❌ Mauvaise combinaison — nouvelle tentative");
+    }
+  } else msgEl.innerHTML="";
+}
+
+function failAttempt(msg){
+  msgEl.innerHTML=`<div class="msg fail">${msg}</div>`;
+  finalSequence=[];
+  clearInterval(timerInterval);
+  setTimeout(()=>{
+    updateSequenceVisual();
+    createGrid();
+    startTimer();
+  },800);
+}
+
+resetBtn.addEventListener("click", ()=>{
+  finalSequence=[];
+  msgEl.innerHTML="";
+  createGrid();
+  generateTarget();
+  startTimer();
+  updateSequenceVisual();
+});
+
+createGrid();
+generateTarget();
+startTimer();
+</script>
+</body>
+</html>

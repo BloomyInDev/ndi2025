@@ -1,0 +1,46 @@
+div#app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #000;
+    margin: 0;
+}
+
+div#app > * {
+    color: white
+}
+
+div#app > canvas {
+    border: .5rem solid #fff;
+    border-radius: 1rem;
+    width: 25;
+}
+
+p#score {
+    font-size: 2rem;
+    margin: 1rem 0 0 0;
+}
+
+div#buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 4rem);
+    grid-template-rows: repeat(3, 4rem);
+    gap: 5px;
+    margin-top: 20px;
+}
+
+div#buttons > button {
+    font-size: 2.5rem;
+    background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    cursor: pointer;
+}
+
+body {
+    margin: 0;
+}
