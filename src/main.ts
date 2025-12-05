@@ -539,7 +539,6 @@ class AlphabetChallengeModal {
     this.hideModal();
     this.unblockPageInteraction();
     
-    // LANCER LA POPUP DE CONNEXION DES COULEURS
     new ColorMatchModal();
   }
 
@@ -576,7 +575,6 @@ class AlphabetChallengeModal {
   }
 }
 
-// NOUVELLE POPUP CONNEXION DES COULEURS
 interface ColorMatchElements {
   overlay: HTMLElement;
   container: HTMLElement;
@@ -595,7 +593,7 @@ interface CircleData {
 
 class ColorMatchModal {
   private elements: ColorMatchElements;
-  private readonly colors: string[] = ['#8B5CF6', '#3B82F6', '#EAB308', '#EF4444']; // violet, bleu, jaune, rouge
+  private readonly colors: string[] = ['#8B5CF6', '#3B82F6', '#EAB308', '#EF4444'];
   private readonly colorNames: string[] = ['violet', 'blue', 'yellow', 'red'];
   private leftCircles: CircleData[] = [];
   private rightCircles: CircleData[] = [];
@@ -626,14 +624,12 @@ class ColorMatchModal {
     this.leftCircles = [];
     this.rightCircles = [];
     
-    // Nettoyer
     this.elements.leftColumn.innerHTML = '';
     this.elements.rightColumn.innerHTML = '';
     this.elements.svgCanvas.innerHTML = '';
     this.elements.feedback.textContent = '';
     this.elements.feedback.classList.remove('error');
     
-    // Créer les colonnes mélangées
     const leftOrder = shuffleArray([...this.colors]);
     const rightOrder = shuffleArray([...this.colors]);
     
@@ -669,24 +665,19 @@ class ColorMatchModal {
   }
 
   private onCircleClick(circleData: CircleData): void {
-    // Si aucun cercle sélectionné, sélectionner celui-ci
     if (!this.selectedCircle) {
       this.selectedCircle = circleData;
       circleData.element.classList.add('selected');
-      
-      // Créer la ligne temporaire
       this.createTempLine(circleData);
       document.addEventListener('mousemove', this.boundMouseMove);
       return;
     }
     
-    // Si on clique sur le même cercle, désélectionner
     if (this.selectedCircle === circleData) {
       this.cancelSelection();
       return;
     }
     
-    // Si on clique sur un cercle du même côté, changer la sélection
     if (this.selectedCircle.side === circleData.side) {
       this.selectedCircle.element.classList.remove('selected');
       this.selectedCircle = circleData;
@@ -695,21 +686,17 @@ class ColorMatchModal {
       return;
     }
     
-    // Vérifier si les couleurs correspondent
     if (this.selectedCircle.color === circleData.color) {
-      // Bonne connexion !
       this.createConnection(this.selectedCircle, circleData);
       this.selectedCircle.element.classList.remove('selected');
       this.selectedCircle.element.classList.add('connected');
       circleData.element.classList.add('connected');
       this.cancelSelection();
       
-      // Vérifier si toutes les connexions sont faites
       if (this.connections.size === 4) {
         this.onSuccess();
       }
     } else {
-      // Mauvaise connexion - tout réinitialiser
       this.onWrongConnection();
     }
   }
@@ -813,9 +800,8 @@ class ColorMatchModal {
     this.hideModal();
     this.unblockPageInteraction();
     
-    // DÉCLENCHER LES ANIMATIONS FINALES
-    initSectionsAnimationWhenReady();
-    startShuffleEffect(10000);
+    // LANCER LA POPUP DE CONFIRMATION
+    new ConfirmationModal();
   }
 
   private showModal(): void {
@@ -825,6 +811,79 @@ class ColorMatchModal {
   private hideModal(): void {
     this.elements.overlay.classList.add('hidden');
     this.cancelSelection();
+  }
+
+  private blockPageInteraction(): void {
+    document.body.style.overflow = 'hidden';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = 'none';
+  }
+
+  private unblockPageInteraction(): void {
+    document.body.style.overflow = '';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = '';
+  }
+}
+
+// NOUVELLE POPUP DE CONFIRMATION AVEC DEUX BOUTONS "OUI"
+interface ConfirmationElements {
+  overlay: HTMLElement;
+  container: HTMLElement;
+  yesLeftBtn: HTMLButtonElement;
+  yesRightBtn: HTMLButtonElement;
+  feedback: HTMLElement;
+}
+
+class ConfirmationModal {
+  private elements: ConfirmationElements;
+
+  constructor() {
+    this.elements = {
+      overlay: document.getElementById('confirmationOverlay') as HTMLElement,
+      container: document.getElementById('confirmationContainer') as HTMLElement,
+      yesLeftBtn: document.getElementById('confirmYesLeft') as HTMLButtonElement,
+      yesRightBtn: document.getElementById('confirmYesRight') as HTMLButtonElement,
+      feedback: document.getElementById('confirmationFeedback') as HTMLElement
+    };
+
+    this.initEventListeners();
+    this.showModal();
+  }
+
+  private initEventListeners(): void {
+    // Bouton gauche = le bon bouton
+    this.elements.yesLeftBtn.addEventListener('click', () => this.onCorrectYes());
+    
+    // Bouton droite = ne marche pas
+    this.elements.yesRightBtn.addEventListener('click', () => this.onWrongYes());
+  }
+
+  private onCorrectYes(): void {
+    this.hideModal();
+    this.unblockPageInteraction();
+    
+    // DÉCLENCHER LES ANIMATIONS FINALES
+    initSectionsAnimationWhenReady();
+    startShuffleEffect(10000);
+  }
+
+  private onWrongYes(): void {
+    this.elements.feedback.textContent = '❌ Ce bouton "oui" ne marche pas ! Cliquez sur l\'autre "oui" à gauche.';
+    this.elements.feedback.classList.add('error');
+    
+    setTimeout(() => {
+      this.elements.feedback.textContent = '';
+      this.elements.feedback.classList.remove('error');
+    }, 3000);
+  }
+
+  private showModal(): void {
+    this.elements.overlay.classList.remove('hidden');
+  }
+
+  private hideModal(): void {
+    this.elements.overlay.classList.add('hidden');
   }
 
   private blockPageInteraction(): void {
