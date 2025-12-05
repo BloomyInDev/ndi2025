@@ -21,10 +21,7 @@
         </nav>
         <title>La Bibliothèque Ouverte - NDI</title>
     </header>
-</head>
-<body>
-    
-    <main>
+    <main class="shuffle-target">
         <nav aria-label="Fil d’Ariane" class="breadcrumb">
             <ol>
                 <li><a href="index.html">Accueil</a></li>
@@ -102,5 +99,45 @@
             <a href="contact.html">Contact</a>
         </p>
     </footer>
+    <script type="module" src="main.ts"></script>
+
+
+    <!-- Modal Overlay et Popup -->
+<div id="modalOverlay" class="modal-overlay">
+  <div class="modal-container">
+    <h2>Trouvez le bon bouton !</h2>
+    <p>Un seul bouton fonctionne... Bonne chance !</p>
+    <div class="buttons-grid" id="buttonsGrid"></div>
+  </div>
+</div>
+<!-- Popup Calcul Mathématique -->
+<div id="mathModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container">
+    <h2>🔢 Résolvez le calcul</h2>
+    <p class="equation-container">
+      <span id="mathEquation"></span>
+    </p>
+    <input type="text" id="mathAnswer" placeholder="Réponse (utilisez . pour la virgule)" maxlength="10">
+    <button id="mathSubmit">Vérifier</button>
+    <div id="mathFeedback"></div>
+  </div>
+</div>
+<!-- Popup Progression -->
+<div id="progressModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container progress-container">
+    <h2>⚡ Atteignez le seuil !</h2>
+    <p id="progressStatus">Objectif: 65% - SPAM !</p>
+    
+    <div class="progress-container-vertical">
+      <div id="progressBar" class="progress-bar-vertical">
+        <div id="thresholdLine" class="threshold-line"></div>
+        <div id="progressFill" class="progress-fill-vertical"></div>
+      </div>
+      <div id="progressText">0%</div>
+    </div>
+    
+    <button id="progressButton">Cliquez pour charger !</button>
+  </div>
+</div>
 </body>
 </html>
