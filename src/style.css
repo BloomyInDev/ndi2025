@@ -5,7 +5,7 @@ body {
     font-weight: 400;
     font-style: normal;
     background-color: #ffffff;
-    background-image: url('../public/background1.png');
+    background-image: url('background1.png');
     background-size: cover;
 }
 
@@ -674,7 +674,7 @@ div a {
 }
 
 .bg_quizz {
-  background-image: url("../../public/background.png");
+  background-image: url("background.png");
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-attachment: fixed ;
