@@ -158,5 +158,27 @@
     <div id="writingComment" class="comment-container"></div>
   </div>
 </div>
+<!-- Popup Alphabet Manquant -->
+<div id="alphabetModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container alphabet-container">
+    <h2>🔤 Trouvez la lettre manquante</h2>
+    
+    <div class="alphabet-display" id="alphabetDisplay">
+      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+    </div>
+    
+    <input 
+      type="text" 
+      id="alphabetAnswer" 
+      placeholder="Quelle lettre manque ?" 
+      maxlength="1"
+      autocomplete="off"
+    >
+    
+    <button id="alphabetSubmit">Valider</button>
+    
+    <div id="alphabetFeedback"></div>
+  </div>
+</div>
 </body>
 </html>

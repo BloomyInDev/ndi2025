@@ -328,7 +328,6 @@ class ProgressChallengeModal {
   }
 }
 
-// POPUP ÉCRITURE 300 LETTRES ✅ SANS ERREUR TYPESCRIPT
 interface WritingElements {
   overlay: HTMLElement;
   container: HTMLElement;
@@ -381,7 +380,6 @@ class WritingChallengeModal {
   }
 
   private initEventListeners(): void {
-    // ✅ CORRIGÉ : Event au lieu de InputEvent
     this.elements.textarea.addEventListener('input', (e: Event) => {
       this.onInput(e);
     });
@@ -391,7 +389,6 @@ class WritingChallengeModal {
     this.lastKeyTime = Date.now();
     this.isActive = true;
     
-    // ✅ Accès sûr au target
     const textarea = e.target as HTMLTextAreaElement;
     const text = textarea.value;
     this.letterCount = text.replace(/\s/g, '').length;
@@ -443,12 +440,11 @@ class WritingChallengeModal {
   private onSuccess(): void {
     if (this.commentInterval) clearInterval(this.commentInterval);
     if (this.inactivityTimer) clearInterval(this.inactivityTimer);
-    alert('🎉 300 lettres écrites ! Chef-d’œuvre accompli !');
+    alert('🎉 300 lettres écrites ! Bravo !');
     this.hideModal();
     this.unblockPageInteraction();
     
-    initSectionsAnimationWhenReady();
-    startShuffleEffect(10000);
+    new AlphabetChallengeModal();
   }
 
   private showModal(): void {
@@ -460,6 +456,112 @@ class WritingChallengeModal {
     this.elements.overlay.classList.add('hidden');
     if (this.commentInterval) clearInterval(this.commentInterval);
     if (this.inactivityTimer) clearInterval(this.inactivityTimer);
+  }
+
+  private blockPageInteraction(): void {
+    document.body.style.overflow = 'hidden';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = 'none';
+  }
+
+  private unblockPageInteraction(): void {
+    document.body.style.overflow = '';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = '';
+  }
+}
+
+// POPUP ALPHABET MANQUANT (SANS TIMER)
+interface AlphabetElements {
+  overlay: HTMLElement;
+  container: HTMLElement;
+  alphabetDisplay: HTMLElement;
+  answerInput: HTMLInputElement;
+  submitBtn: HTMLButtonElement;
+  feedback: HTMLElement;
+}
+
+class AlphabetChallengeModal {
+  private elements: AlphabetElements;
+  private readonly alphabet: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  private missingLetter: string = '';
+
+  constructor() {
+    this.elements = {
+      overlay: document.getElementById('alphabetModalOverlay') as HTMLElement,
+      container: document.getElementById('alphabetModalContainer') as HTMLElement,
+      alphabetDisplay: document.getElementById('alphabetDisplay') as HTMLElement,
+      answerInput: document.getElementById('alphabetAnswer') as HTMLInputElement,
+      submitBtn: document.getElementById('alphabetSubmit') as HTMLButtonElement,
+      feedback: document.getElementById('alphabetFeedback') as HTMLElement
+    };
+
+    this.initGame();
+    this.showModal();
+  }
+
+  private initGame(): void {
+    this.generateAlphabet();
+    this.initEventListeners();
+    this.elements.answerInput.value = '';
+    this.elements.answerInput.focus();
+  }
+
+  private generateAlphabet(): void {
+    const randomIndex = Math.floor(Math.random() * this.alphabet.length);
+    this.missingLetter = this.alphabet[randomIndex];
+
+    const displayAlphabet = this.alphabet.split('').map((letter, index) => {
+      return index === randomIndex ? '_' : letter;
+    }).join(' ');
+
+    this.elements.alphabetDisplay.textContent = displayAlphabet;
+  }
+
+  private initEventListeners(): void {
+    this.elements.submitBtn.addEventListener('click', () => this.checkAnswer());
+    this.elements.answerInput.addEventListener('keypress', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') this.checkAnswer();
+    });
+  }
+
+  private checkAnswer(): void {
+    const userAnswer = this.elements.answerInput.value.trim().toUpperCase();
+    
+    if (userAnswer === this.missingLetter) {
+      this.onCorrectAnswer();
+    } else {
+      this.onWrongAnswer();
+    }
+  }
+
+  private onCorrectAnswer(): void {
+    alert('🎉 Bravo ! Lettre trouvée !');
+    this.hideModal();
+    this.unblockPageInteraction();
+    
+    initSectionsAnimationWhenReady();
+    startShuffleEffect(10000);
+  }
+
+  private onWrongAnswer(): void {
+    this.elements.feedback.textContent = `❌ Non ! C'était ${this.missingLetter}. Nouvelle tentative...`;
+    this.elements.feedback.classList.add('error');
+    
+    setTimeout(() => {
+      this.elements.feedback.textContent = '';
+      this.elements.feedback.classList.remove('error');
+      this.initGame();
+    }, 2000);
+  }
+
+  private showModal(): void {
+    this.elements.overlay.classList.remove('hidden');
+    this.elements.answerInput.focus();
+  }
+
+  private hideModal(): void {
+    this.elements.overlay.classList.add('hidden');
   }
 
   private blockPageInteraction(): void {

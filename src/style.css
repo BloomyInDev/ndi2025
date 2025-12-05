@@ -480,3 +480,65 @@ div a {
   opacity: 1;
   transform: translateY(0);
 }
+
+.alphabet-container {
+  max-width: 500px;
+  text-align: center;
+}
+
+.alphabet-display {
+  font-size: 1.5em;
+  font-family: monospace;
+  letter-spacing: 0.3em;
+  background: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+  line-height: 1.8;
+  word-wrap: break-word;
+}
+
+#alphabetAnswer {
+  width: 100%;
+  padding: 15px;
+  font-size: 2em;
+  text-align: center;
+  text-transform: uppercase;
+  border: 3px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+#alphabetAnswer:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+#alphabetSubmit {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.3em;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#alphabetSubmit:hover {
+  background: #45a049;
+}
+
+#alphabetFeedback {
+  margin-top: 1rem;
+  font-size: 1.1em;
+  min-height: 1.5em;
+  font-weight: bold;
+}
+
+#alphabetFeedback.error {
+  color: #f44336;
+}
