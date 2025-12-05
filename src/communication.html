@@ -156,5 +156,44 @@
     <div id="writingComment" class="comment-container"></div>
   </div>
 </div>
+<!-- Popup Alphabet Manquant -->
+<div id="alphabetModalOverlay" class="modal-overlay hidden">
+  <div class="modal-container alphabet-container">
+    <h2>🔤 Trouvez la lettre manquante</h2>
+    
+    <div class="alphabet-display" id="alphabetDisplay">
+      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+    </div>
+    
+    <input 
+      type="text" 
+      id="alphabetAnswer" 
+      placeholder="Quelle lettre manque ?" 
+      maxlength="1"
+      autocomplete="off"
+    >
+    
+    <button id="alphabetSubmit">Valider</button>
+    
+    <div id="alphabetFeedback"></div>
+  </div>
+</div>
+<!-- Popup Connexion Couleurs -->
+<div id="colorMatchOverlay" class="modal-overlay hidden">
+  <div class="modal-container color-match-container">
+    <h2>🎨 Reliez les couleurs</h2>
+    <p>Cliquez sur un rond puis sur sa jumelle de l'autre côté !</p>
+    
+    <div class="color-match-game" id="colorMatchGameArea">
+      <div class="color-column" id="colorMatchLeft"></div>
+      
+      <svg class="color-match-svg" id="colorMatchSvg"></svg>
+      
+      <div class="color-column" id="colorMatchRight"></div>
+    </div>
+    
+    <div id="colorMatchFeedback"></div>
+  </div>
+</div>
 </body>
 </html>

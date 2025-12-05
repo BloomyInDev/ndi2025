@@ -328,7 +328,6 @@ class ProgressChallengeModal {
   }
 }
 
-// POPUP ÉCRITURE 300 LETTRES ✅ SANS ERREUR TYPESCRIPT
 interface WritingElements {
   overlay: HTMLElement;
   container: HTMLElement;
@@ -381,7 +380,6 @@ class WritingChallengeModal {
   }
 
   private initEventListeners(): void {
-    // ✅ CORRIGÉ : Event au lieu de InputEvent
     this.elements.textarea.addEventListener('input', (e: Event) => {
       this.onInput(e);
     });
@@ -391,7 +389,6 @@ class WritingChallengeModal {
     this.lastKeyTime = Date.now();
     this.isActive = true;
     
-    // ✅ Accès sûr au target
     const textarea = e.target as HTMLTextAreaElement;
     const text = textarea.value;
     this.letterCount = text.replace(/\s/g, '').length;
@@ -443,12 +440,11 @@ class WritingChallengeModal {
   private onSuccess(): void {
     if (this.commentInterval) clearInterval(this.commentInterval);
     if (this.inactivityTimer) clearInterval(this.inactivityTimer);
-    alert('🎉 300 lettres écrites ! Chef-d’œuvre accompli !');
+    alert('🎉 300 lettres écrites ! Bravo !');
     this.hideModal();
     this.unblockPageInteraction();
     
-    initSectionsAnimationWhenReady();
-    startShuffleEffect(10000);
+    new AlphabetChallengeModal();
   }
 
   private showModal(): void {
@@ -460,6 +456,375 @@ class WritingChallengeModal {
     this.elements.overlay.classList.add('hidden');
     if (this.commentInterval) clearInterval(this.commentInterval);
     if (this.inactivityTimer) clearInterval(this.inactivityTimer);
+  }
+
+  private blockPageInteraction(): void {
+    document.body.style.overflow = 'hidden';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = 'none';
+  }
+
+  private unblockPageInteraction(): void {
+    document.body.style.overflow = '';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = '';
+  }
+}
+
+interface AlphabetElements {
+  overlay: HTMLElement;
+  container: HTMLElement;
+  alphabetDisplay: HTMLElement;
+  answerInput: HTMLInputElement;
+  submitBtn: HTMLButtonElement;
+  feedback: HTMLElement;
+}
+
+class AlphabetChallengeModal {
+  private elements: AlphabetElements;
+  private readonly alphabet: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  private missingLetter: string = '';
+
+  constructor() {
+    this.elements = {
+      overlay: document.getElementById('alphabetModalOverlay') as HTMLElement,
+      container: document.getElementById('alphabetModalContainer') as HTMLElement,
+      alphabetDisplay: document.getElementById('alphabetDisplay') as HTMLElement,
+      answerInput: document.getElementById('alphabetAnswer') as HTMLInputElement,
+      submitBtn: document.getElementById('alphabetSubmit') as HTMLButtonElement,
+      feedback: document.getElementById('alphabetFeedback') as HTMLElement
+    };
+
+    this.initGame();
+    this.showModal();
+  }
+
+  private initGame(): void {
+    this.generateAlphabet();
+    this.initEventListeners();
+    this.elements.answerInput.value = '';
+    this.elements.answerInput.focus();
+  }
+
+  private generateAlphabet(): void {
+    const randomIndex = Math.floor(Math.random() * this.alphabet.length);
+    this.missingLetter = this.alphabet[randomIndex];
+
+    const displayAlphabet = this.alphabet.split('').map((letter, index) => {
+      return index === randomIndex ? '_' : letter;
+    }).join(' ');
+
+    this.elements.alphabetDisplay.textContent = displayAlphabet;
+  }
+
+  private initEventListeners(): void {
+    this.elements.submitBtn.addEventListener('click', () => this.checkAnswer());
+    this.elements.answerInput.addEventListener('keypress', (e: KeyboardEvent) => {
+      if (e.key === 'Enter') this.checkAnswer();
+    });
+  }
+
+  private checkAnswer(): void {
+    const userAnswer = this.elements.answerInput.value.trim().toUpperCase();
+    
+    if (userAnswer === this.missingLetter) {
+      this.onCorrectAnswer();
+    } else {
+      this.onWrongAnswer();
+    }
+  }
+
+  private onCorrectAnswer(): void {
+    alert('🎉 Bravo ! Lettre trouvée !');
+    this.hideModal();
+    this.unblockPageInteraction();
+    
+    // LANCER LA POPUP DE CONNEXION DES COULEURS
+    new ColorMatchModal();
+  }
+
+  private onWrongAnswer(): void {
+    this.elements.feedback.textContent = `❌ Non ! C'était ${this.missingLetter}. Nouvelle tentative...`;
+    this.elements.feedback.classList.add('error');
+    
+    setTimeout(() => {
+      this.elements.feedback.textContent = '';
+      this.elements.feedback.classList.remove('error');
+      this.initGame();
+    }, 2000);
+  }
+
+  private showModal(): void {
+    this.elements.overlay.classList.remove('hidden');
+    this.elements.answerInput.focus();
+  }
+
+  private hideModal(): void {
+    this.elements.overlay.classList.add('hidden');
+  }
+
+  private blockPageInteraction(): void {
+    document.body.style.overflow = 'hidden';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = 'none';
+  }
+
+  private unblockPageInteraction(): void {
+    document.body.style.overflow = '';
+    const main = document.querySelector('main') as HTMLElement;
+    if (main) main.style.pointerEvents = '';
+  }
+}
+
+// NOUVELLE POPUP CONNEXION DES COULEURS
+interface ColorMatchElements {
+  overlay: HTMLElement;
+  container: HTMLElement;
+  gameArea: HTMLElement;
+  leftColumn: HTMLElement;
+  rightColumn: HTMLElement;
+  svgCanvas: SVGSVGElement;
+  feedback: HTMLElement;
+}
+
+interface CircleData {
+  color: string;
+  element: HTMLElement;
+  side: 'left' | 'right';
+}
+
+class ColorMatchModal {
+  private elements: ColorMatchElements;
+  private readonly colors: string[] = ['#8B5CF6', '#3B82F6', '#EAB308', '#EF4444']; // violet, bleu, jaune, rouge
+  private readonly colorNames: string[] = ['violet', 'blue', 'yellow', 'red'];
+  private leftCircles: CircleData[] = [];
+  private rightCircles: CircleData[] = [];
+  private selectedCircle: CircleData | null = null;
+  private connections: Map<string, SVGLineElement> = new Map();
+  private tempLine: SVGLineElement | null = null;
+  private boundMouseMove: (e: MouseEvent) => void;
+
+  constructor() {
+    this.elements = {
+      overlay: document.getElementById('colorMatchOverlay') as HTMLElement,
+      container: document.getElementById('colorMatchContainer') as HTMLElement,
+      gameArea: document.getElementById('colorMatchGameArea') as HTMLElement,
+      leftColumn: document.getElementById('colorMatchLeft') as HTMLElement,
+      rightColumn: document.getElementById('colorMatchRight') as HTMLElement,
+      svgCanvas: document.querySelector<SVGSVGElement>('#colorMatchSvg')!,
+      feedback: document.getElementById('colorMatchFeedback') as HTMLElement
+    };
+
+    this.boundMouseMove = this.onMouseMove.bind(this);
+    this.initGame();
+    this.showModal();
+  }
+
+  private initGame(): void {
+    this.selectedCircle = null;
+    this.connections.clear();
+    this.leftCircles = [];
+    this.rightCircles = [];
+    
+    // Nettoyer
+    this.elements.leftColumn.innerHTML = '';
+    this.elements.rightColumn.innerHTML = '';
+    this.elements.svgCanvas.innerHTML = '';
+    this.elements.feedback.textContent = '';
+    this.elements.feedback.classList.remove('error');
+    
+    // Créer les colonnes mélangées
+    const leftOrder = shuffleArray([...this.colors]);
+    const rightOrder = shuffleArray([...this.colors]);
+    
+    leftOrder.forEach((color, index) => {
+      const circle = this.createCircle(color, 'left', index);
+      this.elements.leftColumn.appendChild(circle);
+    });
+    
+    rightOrder.forEach((color, index) => {
+      const circle = this.createCircle(color, 'right', index);
+      this.elements.rightColumn.appendChild(circle);
+    });
+  }
+
+  private createCircle(color: string, side: 'left' | 'right', index: number): HTMLElement {
+    const circle = document.createElement('div');
+    circle.className = 'color-circle';
+    circle.style.backgroundColor = color;
+    circle.dataset.color = color;
+    circle.dataset.side = side;
+    
+    const circleData: CircleData = { color, element: circle, side };
+    
+    if (side === 'left') {
+      this.leftCircles.push(circleData);
+    } else {
+      this.rightCircles.push(circleData);
+    }
+    
+    circle.addEventListener('click', () => this.onCircleClick(circleData));
+    
+    return circle;
+  }
+
+  private onCircleClick(circleData: CircleData): void {
+    // Si aucun cercle sélectionné, sélectionner celui-ci
+    if (!this.selectedCircle) {
+      this.selectedCircle = circleData;
+      circleData.element.classList.add('selected');
+      
+      // Créer la ligne temporaire
+      this.createTempLine(circleData);
+      document.addEventListener('mousemove', this.boundMouseMove);
+      return;
+    }
+    
+    // Si on clique sur le même cercle, désélectionner
+    if (this.selectedCircle === circleData) {
+      this.cancelSelection();
+      return;
+    }
+    
+    // Si on clique sur un cercle du même côté, changer la sélection
+    if (this.selectedCircle.side === circleData.side) {
+      this.selectedCircle.element.classList.remove('selected');
+      this.selectedCircle = circleData;
+      circleData.element.classList.add('selected');
+      this.updateTempLineStart(circleData);
+      return;
+    }
+    
+    // Vérifier si les couleurs correspondent
+    if (this.selectedCircle.color === circleData.color) {
+      // Bonne connexion !
+      this.createConnection(this.selectedCircle, circleData);
+      this.selectedCircle.element.classList.remove('selected');
+      this.selectedCircle.element.classList.add('connected');
+      circleData.element.classList.add('connected');
+      this.cancelSelection();
+      
+      // Vérifier si toutes les connexions sont faites
+      if (this.connections.size === 4) {
+        this.onSuccess();
+      }
+    } else {
+      // Mauvaise connexion - tout réinitialiser
+      this.onWrongConnection();
+    }
+  }
+
+  private createTempLine(circleData: CircleData): void {
+    const rect = circleData.element.getBoundingClientRect();
+    const gameRect = this.elements.gameArea.getBoundingClientRect();
+    
+    const startX = rect.left + rect.width / 2 - gameRect.left;
+    const startY = rect.top + rect.height / 2 - gameRect.top;
+    
+    this.tempLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    this.tempLine.setAttribute('x1', startX.toString());
+    this.tempLine.setAttribute('y1', startY.toString());
+    this.tempLine.setAttribute('x2', startX.toString());
+    this.tempLine.setAttribute('y2', startY.toString());
+    this.tempLine.setAttribute('stroke', circleData.color);
+    this.tempLine.setAttribute('stroke-width', '4');
+    this.tempLine.setAttribute('stroke-linecap', 'round');
+    this.tempLine.classList.add('temp-line');
+    
+    this.elements.svgCanvas.appendChild(this.tempLine);
+  }
+
+  private updateTempLineStart(circleData: CircleData): void {
+    if (!this.tempLine) return;
+    
+    const rect = circleData.element.getBoundingClientRect();
+    const gameRect = this.elements.gameArea.getBoundingClientRect();
+    
+    const startX = rect.left + rect.width / 2 - gameRect.left;
+    const startY = rect.top + rect.height / 2 - gameRect.top;
+    
+    this.tempLine.setAttribute('x1', startX.toString());
+    this.tempLine.setAttribute('y1', startY.toString());
+    this.tempLine.setAttribute('stroke', circleData.color);
+  }
+
+  private onMouseMove(e: MouseEvent): void {
+    if (!this.tempLine) return;
+    
+    const gameRect = this.elements.gameArea.getBoundingClientRect();
+    const x = e.clientX - gameRect.left;
+    const y = e.clientY - gameRect.top;
+    
+    this.tempLine.setAttribute('x2', x.toString());
+    this.tempLine.setAttribute('y2', y.toString());
+  }
+
+  private cancelSelection(): void {
+    if (this.selectedCircle) {
+      this.selectedCircle.element.classList.remove('selected');
+      this.selectedCircle = null;
+    }
+    
+    if (this.tempLine) {
+      this.tempLine.remove();
+      this.tempLine = null;
+    }
+    
+    document.removeEventListener('mousemove', this.boundMouseMove);
+  }
+
+  private createConnection(circle1: CircleData, circle2: CircleData): void {
+    const rect1 = circle1.element.getBoundingClientRect();
+    const rect2 = circle2.element.getBoundingClientRect();
+    const gameRect = this.elements.gameArea.getBoundingClientRect();
+    
+    const x1 = rect1.left + rect1.width / 2 - gameRect.left;
+    const y1 = rect1.top + rect1.height / 2 - gameRect.top;
+    const x2 = rect2.left + rect2.width / 2 - gameRect.left;
+    const y2 = rect2.top + rect2.height / 2 - gameRect.top;
+    
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', x1.toString());
+    line.setAttribute('y1', y1.toString());
+    line.setAttribute('x2', x2.toString());
+    line.setAttribute('y2', y2.toString());
+    line.setAttribute('stroke', circle1.color);
+    line.setAttribute('stroke-width', '4');
+    line.setAttribute('stroke-linecap', 'round');
+    line.classList.add('connection-line');
+    
+    this.elements.svgCanvas.appendChild(line);
+    this.connections.set(circle1.color, line);
+  }
+
+  private onWrongConnection(): void {
+    this.elements.feedback.textContent = '❌ Mauvaise couleur ! Tout est réinitialisé...';
+    this.elements.feedback.classList.add('error');
+    
+    this.cancelSelection();
+    
+    setTimeout(() => {
+      this.initGame();
+    }, 1500);
+  }
+
+  private onSuccess(): void {
+    alert('🎉 Bravo ! Toutes les couleurs sont reliées !');
+    this.hideModal();
+    this.unblockPageInteraction();
+    
+    // DÉCLENCHER LES ANIMATIONS FINALES
+    initSectionsAnimationWhenReady();
+    startShuffleEffect(10000);
+  }
+
+  private showModal(): void {
+    this.elements.overlay.classList.remove('hidden');
+  }
+
+  private hideModal(): void {
+    this.elements.overlay.classList.add('hidden');
+    this.cancelSelection();
   }
 
   private blockPageInteraction(): void {
