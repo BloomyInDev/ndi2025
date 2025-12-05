@@ -1,7 +1,7 @@
 const DEBUG = false;
 const DEFAULT_SNAKE_LENGTH = 5;
 const DEFAULT_FPS = 5;
-const MILLISECONDS_BETWEEN_SPEED_INCREASE = 1000 * .5;
+const MILLISECONDS_BETWEEN_SPEED_INCREASE = 1000 * 2;
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
@@ -33,8 +33,8 @@ let snake: {
 };
 
 let fps = DEFAULT_FPS;
-const snakeSize = 25;
-const cellsCount = 11;
+const snakeSize = window.innerWidth > 1200 ?25:16 ;
+const cellsCount = 21;
 const speed = snakeSize;
 let gameInterval: number | null = null;
 let speedInterval: number | null = null;
